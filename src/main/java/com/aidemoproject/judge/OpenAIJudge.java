@@ -1,20 +1,22 @@
-// src/main/java/com/aidemoproject/judge/OpenAIJudge.java
 package com.aidemoproject.judge;
 
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.OpenAiService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.List;
 
-@Service
 public class OpenAIJudge {
 
     private final OpenAiService service;
 
-    public OpenAIJudge(@Value("${openai.api.key}") String apiKey) {
+    
+    public OpenAIJudge() {
+//        String apiKey = System.getenv("OPENAI_API_KEY");
+        String apiKey = "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";
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new IllegalStateException("OPENAI_API_KEY environment variable not set");
+        }
         this.service = new OpenAiService(apiKey, Duration.ofSeconds(60));
     }
 
@@ -49,10 +51,10 @@ public class OpenAIJudge {
             """.formatted(fullLog);
 
         ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("gpt-4o")                    // Fastest + smartest judge
+                .model("gpt-4o")
                 .messages(List.of(new ChatMessage(ChatMessageRole.USER.value(), prompt)))
                 .maxTokens(500)
-                .temperature((double) 0)
+                .temperature(0.0)
                 .build();
 
         ChatCompletionResult result = service.createChatCompletion(request);

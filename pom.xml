@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -7,12 +8,9 @@
     <artifactId>aidemoproject</artifactId>
     <version>1.0.0</version>
     <name>aidemoproject</name>
-    <packaging>jar</packaging>
 
     <properties>
         <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -21,10 +19,34 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.8.0</version>
-            <scope>test</scope>
+           
         </dependency>
+        
+        <!-- RestAssured — Core + JSON/Path + TestNG integration -->
+<dependency>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>rest-assured</artifactId>
+    <version>5.5.0</version>
+   
+</dependency>
 
-        <!-- OpenAI GPT-4o Judge (OFFICIAL & WORKING) -->
+<!-- Optional but recommended: JSON Schema Validator -->
+<dependency>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>json-schema-validator</artifactId>
+    <version>5.5.0</version>
+   
+</dependency>
+
+
+<dependency>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>spring-mock-mvc</artifactId>
+    <version>5.5.0</version>
+   
+</dependency>
+
+        <!-- OpenAI GPT-4o Judge -->
         <dependency>
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
@@ -38,32 +60,35 @@
             <version>1.5.3</version>
         </dependency>
 
-        <!-- Lombok -->
+        <!-- SLF4J Simple Logger (works) -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
-            <optional>true</optional>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.13</version>
         </dependency>
 
-        <!-- Jackson (required by OpenAI SDK) -->
+        <!-- Jackson (needed by OpenAI SDK) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.18.2</version>
         </dependency>
-
-        <!-- Logging -->
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.11</version>
-        </dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.34</version>
+    <scope>provided</scope>
+</dependency>
+<dependency>
+    <groupId>org.mongodb</groupId>
+    <artifactId>mongodb-driver-sync</artifactId>
+    <version>5.1.0</version>
+    <scope>test</scope>
+</dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -73,16 +98,13 @@
                     <target>17</target>
                 </configuration>
             </plugin>
-
-            <!-- Surefire Plugin for TestNG -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
+                    <parallel>methods</parallel>
+                    <threadCount>10</threadCount>
                 </configuration>
             </plugin>
         </plugins>

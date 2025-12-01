@@ -1,6 +1,6 @@
 # Compiled class files
 *.class
-
+.DS_Store
 # Jar/War/Ear files
 *.jar
 *.war
@@ -41,6 +41,8 @@ bin/
 
 # Log files
 *.log
+
+test-output/
 
 # Temporary files
 *~

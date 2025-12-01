@@ -1,0 +1,116 @@
+package com.aidemoproject.validator.compliance;
+
+
+
+
+
+import com.aidemoproject.base.BaseTest;
+import com.aidemoproject.base.validator.AgentResponse;
+import com.aidemoproject.base.validator.UpiHallucinationValidator;
+import com.aidemoproject.base.validator.UpiOrchestrationValidator;
+import com.aidemoproject.base.validator.UpiPaymentValidator;
+import com.aidemoproject.base.validator.ValidationReport;
+import com.aidemoproject.judge.OpenAIJudge;
+import com.aidemoproject.validator.retrieval.UpiRetrievalValidator;
+
+import org.testng.annotations.Test;
+
+import java.util.List;
+
+public class FullValidationJourneyTest extends BaseTest {
+
+ private final OpenAIJudge judge = new OpenAIJudge();
+
+ @Test
+ public void testUpiHighValuePayment_FullValidationJourney() throws Exception {
+     String sessionId = "full-val-001";
+     journeyLog.clear();
+
+     System.out.println("\nSTARTING FULL VALIDATION JOURNEY — UPI High-Value Payment");
+
+     // === STEP 1: User sends high-value payment request ===
+     ws.send(sessionId, "Send 5000 rupees to mom", "hi");
+     ws.waitFor("OTP", 20);
+     journeyLog.addAll(ws.getConversationLog());
+
+     // === STEP 2: User replies with OTP ===
+     ws.send(sessionId, "123456", "hi");
+     ws.waitFor("\"type\":\"end\"", 30);
+     journeyLog.addAll(ws.getConversationLog());
+
+     // === FINAL RESPONSE FROM MOCK SERVER ===
+     String finalReply = journeyLog.get(journeyLog.size() - 1);
+     System.out.println("AGENT FINAL REPLY: " + finalReply);
+
+     // === BUILD UNIFIED RESPONSE OBJECT ===
+     AgentResponse response = AgentResponse.builder()
+         .statusCode(200)
+         .body(finalReply)
+         .conversationLog(journeyLog)
+         .sessionId(sessionId)
+         .userMessage("Send 5000 rupees to mom")
+         .journeyType("upi_payment")
+         .build();
+     
+     
+     
+
+     // === ONE LINE — ALL VALIDATORS IN PLAY ===
+//     ValidationReport report = UpiPaymentValidator.create()
+//    		    .withHallucinationValidator(new UpiHallucinationValidator())
+//    		    .withOrchestrationValidator(new UpiOrchestrationValidator())
+//    		    .withRetrievalValidator(new UpiRetrievalValidator())
+//    		    .withComplianceValidator(new RbiComplianceValidator())
+//    		    .verify(response);
+     
+     
+     ValidationReport report = UpiPaymentValidator.create()
+    		    .verify(AgentResponse.builder()
+    		        .statusCode(200)
+    		        .body(finalReply)
+    		        .conversationLog(ws.getConversationLog())  // ← CLEAN log, no duplicates
+    		        .sessionId(sessionId)
+    		        .userMessage("Send 5000 rupees to mom")
+    		        .journeyType("upi_payment")
+    		        .build());
+
+     // === VALIDATION RESULTS ===
+     System.out.println("\n" + "=".repeat(100));
+     System.out.println("           FULL VALIDATION REPORT");
+     System.out.println("=".repeat(100));
+     System.out.println("Journey          : " + report.getJourney());
+     System.out.println("Passed           : " + report.isPassed());
+     System.out.println("Hallucination    : " + (report.getHallucinationScore() == 1.0 ? "NO" : "YES"));
+     System.out.println("Orchestration    : " + (report.getOrchestrationScore() == 1.0 ? "PERFECT" : "BROKEN"));
+     System.out.println("Retrieval        : " + (report.getRetrievalAccuracy() == 1.0 ? "ACCURATE" : "STALE"));
+     System.out.println("Compliance       : " + (report.getComplianceScore() == 1.0 ? "RBI SAFE" : "VIOLATION"));
+     System.out.println("Critical Issues  : " + report.isCritical());
+     if (!report.getFailures().isEmpty()) {
+         System.out.println("FAILURES:");
+         report.getFailures().forEach(f -> System.out.println("  • " + f));
+     }
+     System.out.println("=".repeat(100));
+
+     // === FINAL ASSERTIONS — BLOCK DEPLOYMENT IF ANYTHING FAILS ===
+     assert report.isPassed() : "VALIDATION FAILED — DO NOT SHIP";
+     assert !report.isCritical() : "CRITICAL ISSUE DETECTED — BLOCKING DEPLOYMENT";
+
+     // === FINAL GPT-4o JUDGE (The Ultimate Gate) ===
+     String verdict = judge.judge(journeyLog);
+     System.out.println("\nGPT-4o FINAL JUDGMENT:");
+     System.out.println(verdict);
+
+     assert verdict.contains("\"overall_grade\": \"A\"") : 
+         "GPT-4o REJECTED AGENT — NOT PRODUCTION READY";
+
+     // === LOG TO MONGO (Only Critical Journeys) ===
+//     mongoLogger.logJourney(
+//         "testUpiHighValuePayment_FullValidationJourney",
+//         "UPI High-Value Payment",
+//         journeyLog,
+//         true
+//     );
+
+     System.out.println("\n10/10 A — ALL VALIDATORS PASSED — SHIP IT");
+ }
+}

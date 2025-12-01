@@ -1,74 +1,51 @@
 package com.aidemoproject.base;
 
-import com.aidemoproject.utils.LoggerUtil;
-import org.java_websocket.client.WebSocketClient;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 
-
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-
-import java.net.URI;
-import java.util.concurrent.CopyOnWriteArrayList;
+import com.aidemoproject.MongoJourneyLogger;
+import com.aidemoproject.judge.OpenAIJudge;
+import com.aidemoproject.websocket.client.GenericWebSocketClient;
 
 public class BaseTest {
 
-    protected WebSocketClient client;
-    protected final CopyOnWriteArrayList<String> conversationLog = new CopyOnWriteArrayList<>();
+ protected GenericWebSocketClient ws;
+ protected OpenAIJudge judge;
+ protected MongoJourneyLogger mongoLogger;
+ protected CopyOnWriteArrayList<String> journeyLog;
 
-    @BeforeSuite
-    void setup() throws Exception {
-        LoggerUtil.info("Setting up WebSocket connection to UPI Agent...");
+ @BeforeClass
+ public void setup() throws Exception {
+     System.out.println("\n[BASE SETUP] Starting...");
 
-        client = new WebSocketClient(new URI("ws://localhost:8765")) {
-            @Override
-            public void onOpen(ServerHandshake handshake) {
-                LoggerUtil.info("Connected to UPI Agent at ws://localhost:8765");
-            }
+     // 1. Create log first
+     journeyLog = new CopyOnWriteArrayList<>();
 
-            @Override
-            public void onMessage(String message) {
-                conversationLog.add(message);
-                LoggerUtil.info("RECEIVED → " + message);
-            }
+     // 2. Create client — NO @Override anywhere
+     ws = new GenericWebSocketClient("ws://localhost:8765");
 
-            @Override
-            public void onClose(int code, String reason, boolean remote) {
-                LoggerUtil.info("WebSocket closed: " + reason);
-            }
+     // 3. Manually hook into the client's message handling
+     ws.setMessageHandler(message -> {
+//         journeyLog.add(message);
+         System.out.println("LOGGED → " + message);
+     });
 
-            @Override
-            public void onError(Exception ex) {
-                LoggerUtil.error("WebSocket error: " + ex.getMessage(), ex);
-            }
-        };
+     judge = new OpenAIJudge();
+     mongoLogger = new MongoJourneyLogger();
 
-        client.connectBlocking();
-        LoggerUtil.info("Apex Framework Started — GPT-4o Judge Ready");
-    }
+     System.out.println("[BASE SETUP] Ready — WebSocket + Judge + Mongo connected");
+ }
 
-    @AfterSuite
-    void teardown() throws Exception {
-        if (client != null && client.isOpen()) {
-            client.closeBlocking();
-            LoggerUtil.info("WebSocket connection closed cleanly");
-        }
-        LoggerUtil.info("Apex Framework Completed — All Tests Finished");
-    }
+ @AfterClass
+ public void teardown() throws Exception {
+     System.out.println("\n[BASE TEARDOWN] Cleaning up...");
+     if (ws != null) ws.close();
+     System.out.println("[BASE TEARDOWN] Done");
+ }
 
-    // Helper to send messages from child tests
-    protected void sendMessage(String sessionId, String text, String lang) throws Exception {
-        String json = String.format(
-                "{\"session_id\":\"%s\",\"message\":\"%s\",\"language\":\"%s\"}",
-                sessionId,
-                text.replace("\"", "\\\""),
-                lang
-        );
-        client.send(json);
-    }
+ protected void clearLog() {
+     journeyLog.clear();
+ }
 }

@@ -1,0 +1,23 @@
+package com.aidemoproject.base.validator;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import java.util.List;
+
+@Getter
+@Builder
+@AllArgsConstructor
+public class AgentResponse {
+	
+	
+	
+	private final int statusCode;
+    private final String body;
+    private final List<String> conversationLog;
+    private final String sessionId;
+    private final String userMessage;
+    private final String journeyType;
+
+}

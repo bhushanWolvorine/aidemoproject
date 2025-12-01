@@ -1,4 +1,3 @@
-// src/main/java/com/aidemoproject/utils/LoggerUtil.java
 package com.aidemoproject.utils;
 
 import org.slf4j.Logger;

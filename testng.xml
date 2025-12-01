@@ -1,11 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Apex LLM Framework" parallel="classes" thread-count="10">
-    <listeners>
-        <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
-    </listeners>
-    <test name="Full Suite">
-        <packages>
-            <package name="com.apex.llm.tests.*"/>
-        </packages>
+<suite name="Apex LLM Tests">
+    <test name="All Tests">
+        <classes>
+            <class name="com.aidemoproject.HighValuePaymentTest"/>
+            <class name="com.aidemoproject.SafetyTest"/>
+        </classes>
     </test>
 </suite>
