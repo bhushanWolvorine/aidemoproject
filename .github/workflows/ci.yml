@@ -65,7 +65,7 @@ jobs:
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}   # ← THIS IS THE WINNER
+          github_token: ${{ secrets.DEPLOY_TOKEN_DEMO }}   # ← THIS IS THE WINNER
           publish_dir: target/allure-report
           commit_message: "Allure Report — Run #${{ github.run_number }}"
           force_orphan: true
