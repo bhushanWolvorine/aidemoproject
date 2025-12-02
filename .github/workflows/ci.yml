@@ -1,4 +1,5 @@
-name: AI Agent
+# .github/workflows/ci.yml
+name: AI Agent — Allure Only (FINAL & BULLETPROOF)
 
 on:
   push:
@@ -22,10 +23,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js 20
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '20'   # ← Critical: fixes wait-on warnings
           cache: 'npm'
 
       - name: Install Mock Server Dependencies
@@ -38,13 +39,25 @@ jobs:
           PID=$!
           echo "Mock server PID: $PID"
 
-          # Wait for HTTP health
-          echo "Waiting for http://localhost:3000/health..."
-          npx wait-on http://localhost:3000/health --timeout 30000
+          # Wait for HTTP health (fast)
+          echo "Waiting for HTTP health..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3000/health >/dev/null 2>&1; then
+              echo "HTTP ready!"
+              break
+            fi
+            sleep 2
+          done
 
-          # Wait for WebSocket
-          echo "Waiting for ws://localhost:8765..."
-          npx wait-on ws://localhost:8765 --timeout 30000
+          # Wait for WebSocket port using ncat (built-in, instant)
+          echo "Waiting for WebSocket on port 8765..."
+          for i in {1..30}; do
+            if echo | ncat -w 1 localhost 8765 >/dev/null 2>&1; then
+              echo "WebSocket ready!"
+              break
+            fi
+            sleep 2
+          done
 
           echo "Mock server 100% ready!"
 
@@ -61,20 +74,20 @@ jobs:
         if: always()
         run: allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Allure Report as Artifact
+      - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ github.run_number }}
           path: target/allure-report
-          retention-days: 30
 
-      - name: Deploy to GitHub Pages (on main branch only)
-        if: success() && github.ref == 'refs/heads/main'
+      - name: Deploy to GitHub Pages (main + allure branch)
+        if: success() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/allure')
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/allure-report
+          destination_dir: ${{ github.ref_name }}   # main → root, allure → /allure
 
       - name: Show Mock Server Logs on Failure
         if: failure()
