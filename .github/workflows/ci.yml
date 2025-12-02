@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: AI Agent CI/CD — Full Validation (Self-Contained)
+name: AI Agent CI/CD — Full Validation
 
 on:
   push:
@@ -8,38 +8,18 @@ on:
     branches: [ main ]
 
 jobs:
-  full-validation:
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    # Services — your mock server + ReportPortal
     services:
-      # 1. UPI Mock Server (Node.js)
-      mock-server:
-        image: node:18-alpine
-        ports:
-          - 8765:8765
-        volumes:
-          - ./server.js:/app/server.js
-        command: ["sh", "-c", "cd /app && node server.js"]
-        options: >-
-          --health-cmd "curl -f http://localhost:3000/health || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-
-      # 2. ReportPortal (lightweight)
+      # ReportPortal — lightweight UI-only (fast)
       reportportal:
         image: reportportal/service-ui:5.14.2
         ports:
           - 8080:8080
         env:
           RP_ENABLE: "true"
-        options: >-
-          --health-cmd "curl -f http://localhost:8080/api/v1/user || exit 1"
-          --health-interval 15s
-          --health-timeout 10s
-          --health-retries 12
 
     steps:
       - name: Checkout code
@@ -59,9 +39,15 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Wait for Mock Server
+      # Start your mock server as a background process (no services needed)
+      - name: Start UPI Mock Server
         run: |
-          echo "Waiting for mock server..."
+          echo "Starting mock server..."
+          node server.js > mock-server.log 2>&1 &
+          echo "Mock server started (PID: $!)"
+
+      - name: Wait for Mock Server Health
+        run: |
           for i in {1..30}; do
             if curl -f http://localhost:3000/health; then
               echo "Mock server ready!"
@@ -72,7 +58,6 @@ jobs:
 
       - name: Wait for ReportPortal
         run: |
-          echo "Waiting for ReportPortal..."
           for i in {1..40}; do
             if curl -f http://localhost:8080/api/v1/user > /dev/null 2>&1; then
               echo "ReportPortal ready!"
@@ -89,31 +74,26 @@ jobs:
             -Dreportportal.endpoint=http://localhost:8080 \
             -Dreportportal.api.key=superadmin \
             -Dreportportal.project=default_personal \
-            -Dreportportal.launch="CI #${{ github.run_number }} — ${{ github.ref_name }}" \
-            -Dreportportal.attributes=ci:github;run:${{ github.run_id }}
+            -Dreportportal.launch="CI #${{ github.run_number }}"
 
-      - name: Generate Allure Report (Backup)
+      - name: Generate Allure Report
         if: always()
-        run: |
-          allure generate target/allure-results --clean -o target/allure-report
+        run: allure generate target/allure-results --clean -o target/allure-report
 
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report-${{ github.run_number }}
+          name: allure-report
           path: target/allure-report
-          retention-days: 30
 
-      - name: Deploy Allure to GitHub Pages (on main)
+      - name: Deploy to GitHub Pages
         if: success() && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/allure-report
 
-      - name: Fail CI if Tests Failed
+      - name: Show Mock Server Logs (on failure)
         if: failure()
-        run: |
-          echo "AI AGENT VALIDATION FAILED — BLOCKING DEPLOYMENT"
-          exit 1
+        run: cat mock-server.log || true
