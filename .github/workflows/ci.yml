@@ -66,11 +66,11 @@ jobs:
           path: target/allure-report
 
       # ONLY ONE DEPLOYMENT STEP — THIS ONE WORKS 100%
-      - name: Deploy to GitHub Pages
+      - name: Deploy Allure Report to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}   # ← PERFECT, no extra token needed
+          personal_token: ${{ secrets.DEPLOY_TOKEN_DEMO }}   # ← Updated to your exact secret name
           publish_dir: target/allure-report
           commit_message: "Allure Report — Run #${{ github.run_number }}"
           force_orphan: true
