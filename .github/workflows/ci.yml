@@ -1,0 +1,80 @@
+name: AI Agent CI/CD — Local ReportPortal + Allure
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Start ReportPortal as a service in CI (same as your local)
+    services:
+      reportportal:
+        image: reportportal/reportportal:5.14.2
+        ports:
+          - 8080:8080
+        env:
+          RP_ENABLE: "true"
+          RP_INITIAL_ADMIN_PASSWORD: "erebus"
+        options: >-
+          --health-cmd "curl -f http://localhost:8080/api/v1/user || exit 1"
+          --health-interval 30s
+          --health-timeout 10s
+          --health-retries 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Wait for ReportPortal to be ready
+        run: |
+          echo "Waiting for ReportPortal at http://localhost:8080..."
+          for i in {1..60}; do
+            if curl -f http://localhost:8080/api/v1/user; then
+              echo "ReportPortal is UP!"
+              break
+            fi
+            echo "Still waiting... ($i/60)"
+            sleep 5
+          done
+
+      - name: Run Tests → Upload to Local ReportPortal (LIVE)
+        run: |
+          mvn clean test -B \
+            -Dreportportal.enabled=true \
+            -Dreportportal.endpoint=http://localhost:8080 \
+            -Dreportportal.api.key=superadmin \
+            -Dreportportal.project=default_personal \
+            -Dreportportal.launch="CI_BUILD_${{ github.run_number }_$(date +%H%M%S)" \
+            -Dreportportal.attributes=runner:github;branch:${{ github.ref_name }}
+
+      - name: Generate Allure Report (Backup)
+        if: always()
+        run: allure generate target/allure-results --clean -o target/allure-report
+
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ github.run_number }}
+          path: target/allure-report
+          retention-days: 30
+
+      - name: Deploy Allure to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/allure-report
+
