@@ -7,7 +7,7 @@
     <groupId>com.aidemoproject</groupId>
     <artifactId>aidemoproject</artifactId>
     <version>1.0.0</version>
-    <name>AI Demo Project</name>
+    <name>AI Agent Validation Framework</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -25,7 +25,7 @@
            
         </dependency>
 
-        <!-- Allure TestNG — ONLY reporting -->
+        <!-- Allure TestNG — ONLY reporting system -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
@@ -40,21 +40,21 @@
             <version>1.9.22</version>
         </dependency>
 
-        <!-- OpenAI Judge -->
+        <!-- OpenAI GPT-4o Judge -->
         <dependency>
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
             <version>0.18.2</version>
         </dependency>
 
-        <!-- WebSocket -->
+        <!-- WebSocket Client -->
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
         </dependency>
 
-        <!-- MongoDB -->
+        <!-- MongoDB Driver -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
@@ -67,7 +67,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
-            
+           
         </dependency>
 
         <!-- RestAssured -->
@@ -75,7 +75,7 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.5.0</version>
-            
+           
         </dependency>
 
         <!-- Jackson -->
@@ -85,7 +85,7 @@
             <version>2.18.2</version>
         </dependency>
 
-        <!-- Logging -->
+        <!-- SLF4J + Simple Logger -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -105,7 +105,7 @@
                 </configuration>
             </plugin>
 
-            <!-- SUREFIRE — THIS IS THE MAGIC (Allure 100% works) -->
+            <!-- SUREFIRE — THIS IS THE ONLY VERSION THAT WORKS 100% -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -114,7 +114,12 @@
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
 
-                    <!-- FORCE Allure listener -->
+                    <!-- FORCE testng.xml execution -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+
+                    <!-- FORCE Allure listener — 100% guaranteed -->
                     <properties>
                         <property>
                             <name>listener</name>
@@ -122,7 +127,7 @@
                         </property>
                     </properties>
 
-                    <!-- AspectJ agent -->
+                    <!-- AspectJ agent for Allure -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
                     </argLine>

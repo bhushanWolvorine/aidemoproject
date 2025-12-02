@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: AI Agent
+name: AI Agent 
 
 on:
   push:
@@ -35,15 +35,8 @@ jobs:
       - name: Start Mock Server
         run: |
           npm start > mock.log 2>&1 &
-          echo "Waiting for server..."
-          for i in {1..30}; do
-            curl -f http://localhost:3000/health && break
-            sleep 2
-          done
-          for i in {1..30}; do
-            echo | ncat -w 1 localhost 8765 && break
-            sleep 2
-          done
+          for i in {1..30}; do curl -f http://localhost:3000/health && break; sleep 2; done
+          for i in {1..30}; do echo | ncat -w 1 localhost 8765 && break; sleep 2; done
 
       - name: Install Allure CLI
         run: |
@@ -51,14 +44,19 @@ jobs:
           unzip -q allure.zip -d ~/allure
           echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
 
-      - name: Run Tests
+      - name: Run Tests (via testng.xml + Allure listener)
         run: mvn clean test -B
+
+      - name: Verify Allure Results (debug)
+        run: |
+          echo "Allure results count:"
+          find target/allure-results -name "*.json" | wc -l || echo "No results!"
 
       - name: Generate Allure Report
         if: always()
         run: allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Report
+      - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -71,4 +69,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/allure-report
-          destination_dir: ${{ github.ref_name == 'refs/heads/allure' && 'allure' || '' }}
