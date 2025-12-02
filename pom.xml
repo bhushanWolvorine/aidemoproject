@@ -13,6 +13,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <allure.version>2.27.0</allure.version>
     </properties>
 
     <dependencies>
@@ -21,46 +22,39 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.8.0</version>
-           
+          
         </dependency>
 
-        <!-- Allure TestNG -->
+        <!-- Allure TestNG — ONLY reporting -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
-            <version>2.27.0</version>
-            
-        </dependency>
-
-        <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>agent-java-testng</artifactId>
-            <version>5.5.0</version>
+            <version>${allure.version}</version>
            
         </dependency>
 
-        <!-- ReportPortal Logback Logger — FIXED VERSION 5.5.0 -->
+        <!-- AspectJ Weaver — REQUIRED for Allure -->
         <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>logger-java-logback</artifactId>
-            <version>5.1.0</version>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.22</version>
         </dependency>
 
-        <!-- OpenAI Judge -->
+        <!-- OpenAI GPT-4o Judge -->
         <dependency>
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
             <version>0.18.2</version>
         </dependency>
 
-        <!-- WebSocket -->
+        <!-- WebSocket Client -->
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
         </dependency>
 
-        <!-- MongoDB -->
+        <!-- MongoDB Driver -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
@@ -84,25 +78,25 @@
            
         </dependency>
 
-        <!-- Jackson -->
+        <!-- Jackson (OpenAI needs it) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.18.2</version>
         </dependency>
 
-        <!-- Logback (for ReportPortal) -->
+        <!-- SLF4J Simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.13</version>
+        </dependency>
+
+        <!-- Logback (optional, but clean logs) -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
-        </dependency>
-
-        <!-- AspectJ (Allure) -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.22</version>
         </dependency>
     </dependencies>
 
@@ -118,20 +112,16 @@
                 </configuration>
             </plugin>
 
-            <!-- Surefire — RUNS ONLY testng.xml -->
+            <!-- SUREFIRE — ONLY Allure, 100% working -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <!-- THIS LINE IS THE KEY -->
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
 
+                    <!-- Critical: Allure listener + AspectJ -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
                     </argLine>
@@ -139,12 +129,13 @@
                     <properties>
                         <property>
                             <name>listener</name>
-                            <value>
-                                io.qameta.allure.testng.AllureTestNg,
-                                com.epam.reportportal.testng.ReportPortalTestNGListener
-                            </value>
+                            <value>io.qameta.allure.testng.AllureTestNg</value>
                         </property>
                     </properties>
+
+                    <systemPropertyVariables>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>
