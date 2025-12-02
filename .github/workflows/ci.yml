@@ -2,9 +2,9 @@ name: AI Agent
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, allure ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop, allure ]
 
 jobs:
   test:
