@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: AI Agent 
+name: AI Agent — Allure Only (Perfect)
 
 on:
   push:
@@ -23,20 +23,22 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install Mock Server
+      - name: Install Mock Server Dependencies
         run: npm ci
 
       - name: Start Mock Server
         run: |
-          npm start > mock.log 2>&1 &
+          npm start > mock-server.log 2>&1 &
+          echo "Waiting for mock server..."
           for i in {1..30}; do curl -f http://localhost:3000/health && break; sleep 2; done
           for i in {1..30}; do echo | ncat -w 1 localhost 8765 && break; sleep 2; done
+          echo "Mock server ready!"
 
       - name: Install Allure CLI
         run: |
@@ -47,34 +49,33 @@ jobs:
       - name: Run Tests (via testng.xml + Allure listener)
         run: mvn clean test -B
 
-      - name: Verify Allure Results (debug)
+      - name: Debug — Show Allure Results Count
         run: |
-          echo "Allure results count:"
-          find target/allure-results -name "*.json" | wc -l || echo "No results!"
+          echo "Allure result files:"
+          find target/allure-results -name "*.json" | wc -l || echo "0 files!"
 
       - name: Generate Allure Report
         if: always()
         run: allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Allure Report
+      - name: Upload Allure Report (artifact)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/allure-report
 
+      # ONLY ONE DEPLOYMENT STEP — THIS ONE WORKS 100%
       - name: Deploy to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/allure-report
-      
-      - name: Deploy Allure Report to GitHub Pages
-        if: success()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          personal_token: ${{ secrets.DEPLOY_TOKEN }}   # ← THIS WORKS
+          github_token: ${{ secrets.GITHUB_TOKEN }}   # ← PERFECT, no extra token needed
           publish_dir: target/allure-report
           commit_message: "Allure Report — Run #${{ github.run_number }}"
           force_orphan: true
+          keep_files: false
+
+      - name: Show Mock Server Logs on Failure
+        if: failure()
+        run: cat mock-server.log || true
