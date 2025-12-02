@@ -31,34 +31,45 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20 (fixes wait-on)
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install Mock Server Dependencies
-        run: npm ci  # ← Uses your package.json + package-lock.json (fast & safe)
+        run: npm ci
 
       - name: Start Mock Server
         run: |
           echo "Starting UPI Mock Server..."
           npm start > mock-server.log 2>&1 &
-          MOCK_PID=$!
-          echo "PID: $MOCK_PID"
+          echo "Mock server started (PID: $!)"
 
-          # Wait for HTTP health
-          npx wait-on http://localhost:3000/health --timeout 30000
+          # Reliable health check using curl (no wait-on needed)
+          echo "Waiting for HTTP health endpoint..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3000/health >/dev/null 2>&1; then
+              echo "HTTP health OK!"
+              break
+            fi
+            sleep 2
+          done
 
-          # Wait for WebSocket
-          npx wait-on ws://localhost:8765 --timeout 30000
-
-          echo "Mock server 100% ready!"
+          # Reliable WebSocket check using ncat (built-in)
+          echo "Waiting for WebSocket on port 8765..."
+          for i in {1..30}; do
+            if echo | ncat -w 1 localhost 8765 >/dev/null 2>&1; then
+              echo "WebSocket ready!"
+              break
+            fi
+            sleep 2
+          done
 
       - name: Wait for ReportPortal
         run: |
           for i in {1..40}; do
-            if curl -f http://localhost:8080/api/v1/user > /dev/null 2>&1; then
+            if curl -f http://localhost:8080/api/v1/user >/dev/null 2>&1; then
               echo "ReportPortal ready!"
               break
             fi
@@ -73,7 +84,7 @@ jobs:
             -Dreportportal.endpoint=http://localhost:8080 \
             -Dreportportal.api.key=superadmin \
             -Dreportportal.project=default_personal \
-            -Dreportportal.launch="CI #${{ github.run_number }} — ${{ github.ref_name }}"
+            -Dreportportal.launch="CI #${{ github.run_number }}"
 
       - name: Generate Allure Report
         if: always()
@@ -85,13 +96,6 @@ jobs:
         with:
           name: allure-report
           path: target/allure-report
-
-      - name: Deploy to GitHub Pages
-        if: success() && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/allure-report
 
       - name: Show Mock Server Logs on Failure
         if: failure()
