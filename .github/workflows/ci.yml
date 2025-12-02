@@ -1,4 +1,4 @@
-name: AI Agent CI/CD — Local ReportPortal + Allure
+name: AI Agent
 
 on:
   push:
@@ -7,24 +7,38 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  full-validation:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
 
-    # Start ReportPortal as a service in CI (same as your local)
+    # Everything runs inside GitHub Actions — no dependency on your laptop
     services:
+      # 1. Your UPI Mock Server (Node.js)
+      mock-server:
+        image: node:18-alpine
+        ports:
+          - 8765:8765
+        volumes:
+          - ./server.js:/app/server.js
+        working-directory: /app
+        options: >-
+          --health-cmd "curl -f http://localhost:3000/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+      # 2. ReportPortal — lightweight UI-only version (fastest, < 1 GB RAM)
       reportportal:
-        image: reportportal/reportportal:5.14.2
+        image: reportportal/service-ui:5.14.2
         ports:
           - 8080:8080
         env:
           RP_ENABLE: "true"
-          RP_INITIAL_ADMIN_PASSWORD: "erebus"
         options: >-
           --health-cmd "curl -f http://localhost:8080/api/v1/user || exit 1"
-          --health-interval 30s
+          --health-interval 15s
           --health-timeout 10s
-          --health-retries 10
+          --health-retries 12
 
     steps:
       - name: Checkout code
@@ -37,33 +51,51 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Wait for ReportPortal to be ready
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Wait for Mock Server
         run: |
-          echo "Waiting for ReportPortal at http://localhost:8080..."
-          for i in {1..60}; do
-            if curl -f http://localhost:8080/api/v1/user; then
+          for i in {1..30}; do
+            if curl -f http://localhost:3000/health; then
+              echo "Mock server ready!"
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Wait for ReportPortal
+        run: |
+          echo "Waiting for ReportPortal..."
+          for i in {1..40}; do
+            if curl -f http://localhost:8080/api/v1/user > /dev/null 2>&1; then
               echo "ReportPortal is UP!"
               break
             fi
-            echo "Still waiting... ($i/60)"
             sleep 5
           done
 
-      - name: Run Tests → Upload to Local ReportPortal (LIVE)
+      - name: Run Full Test Suite → Live Upload to ReportPortal
         run: |
           mvn clean test -B \
+            -Dwebsocket.url=ws://localhost:8765 \
             -Dreportportal.enabled=true \
             -Dreportportal.endpoint=http://localhost:8080 \
             -Dreportportal.api.key=superadmin \
             -Dreportportal.project=default_personal \
-            -Dreportportal.launch="CI_BUILD_${{ github.run_number }_$(date +%H%M%S)" \
-            -Dreportportal.attributes=runner:github;branch:${{ github.ref_name }}
+            -Dreportportal.launch="CI #${{ github.run_number }} — ${{ github.ref_name }}" \
+            -Dreportportal.attributes=ci:github;run:${{ github.run_id }}
 
       - name: Generate Allure Report (Backup)
         if: always()
-        run: allure generate target/allure-results --clean -o target/allure-report
+        run: |
+          allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Allure Report
+      - name: Upload Allure Report (Downloadable)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -71,10 +103,16 @@ jobs:
           path: target/allure-report
           retention-days: 30
 
-      - name: Deploy Allure to GitHub Pages
-        if: github.ref == 'refs/heads/main'
+      - name: Publish Allure to GitHub Pages (on main)
+        if: success() && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/allure-report
+
+      - name: Fail CI if Tests Failed
+        if: failure()
+        run: |
+          echo "AI AGENT VALIDATION FAILED — BLOCKING DEPLOYMENT"
+          exit 1
 
