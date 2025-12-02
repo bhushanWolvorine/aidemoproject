@@ -1,9 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Apex LLM Tests">
+<!-- <listeners>
+    <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
+</listeners> -->
     <test name="All Tests">
+    
         <classes>
-            <class name="com.aidemoproject.HighValuePaymentTest"/>
-            <class name="com.aidemoproject.SafetyTest"/>
+            <class name="com.aidemoproject.validator.retrieval.RAGValidatorTest"/>
+            <class name="com.aidemoproject.validator.compliance.TestOrchestartion"/>
         </classes>
     </test>
 </suite>

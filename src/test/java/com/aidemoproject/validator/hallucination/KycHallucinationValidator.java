@@ -2,22 +2,36 @@ package com.aidemoproject.validator.hallucination;
 
 import java.util.List;
 
+
+
+import java.util.List;
+
 public class KycHallucinationValidator implements HallucinationValidator {
-	@Override
-	public String getJourneyName() {
-		return "KYC";
-	}
-	// Different rules: "Aadhaar verified" without verify_document tool
 
-	@Override
-	public boolean hasHallucination(List<String> conversationLog, String journeyContext) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+ @Override
+ public boolean hasHallucination(List<String> conversationLog, String journeyContext) {
+     boolean hasVerifyTool = conversationLog.stream()
+         .anyMatch(msg -> msg.contains("verify_document") || msg.contains("verify_aadhaar"));
 
-	@Override
-	public double getHallucinationScore(List<String> conversationLog, String journeyContext) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+     boolean claimsVerified = conversationLog.stream()
+         .anyMatch(msg -> {
+             String lower = msg.toLowerCase();
+             return lower.contains("verified") || 
+                    lower.contains("सत्यापित") || 
+                    lower.contains("successfully") || 
+                    lower.contains("हो गया");
+         });
+
+     return claimsVerified && !hasVerifyTool;
+ }
+
+ @Override
+ public double getHallucinationScore(List<String> conversationLog, String journeyContext) {
+     return hasHallucination(conversationLog, journeyContext) ? 1.0 : 0.0;
+ }
+
+ @Override
+ public String getJourneyName() {
+     return "KYC";
+ }
 }

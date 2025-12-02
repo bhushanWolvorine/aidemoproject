@@ -16,7 +16,7 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
-
+allure-results/
 # Gradle
 .gradle/
 /build/
