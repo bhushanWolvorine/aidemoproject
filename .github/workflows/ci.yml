@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: AI Agent — Allure Only (Perfect)
+name: AI Agent — Allure Only (Perfect & Final)
 
 on:
   push:
@@ -46,31 +46,26 @@ jobs:
           unzip -q allure.zip -d ~/allure
           echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
 
-      - name: Run Tests (via testng.xml + Allure listener)
+      - name: Run Tests
         run: mvn clean test -B
-
-      - name: Debug — Show Allure Results Count
-        run: |
-          echo "Allure result files:"
-          find target/allure-results -name "*.json" | wc -l || echo "0 files!"
 
       - name: Generate Allure Report
         if: always()
         run: allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Allure Report (artifact)
+      - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/allure-report
 
-      # ONLY ONE DEPLOYMENT STEP — THIS ONE WORKS 100%
-      - name: Deploy Allure Report to GitHub Pages
+      # ONLY THIS ONE — 100% WORKING
+      - name: Deploy to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.DEPLOY_TOKEN_DEMO }}   # ← Updated to your exact secret name
+          github_token: ${{ secrets.GITHUB_TOKEN }}   # ← THIS IS THE WINNER
           publish_dir: target/allure-report
           commit_message: "Allure Report — Run #${{ github.run_number }}"
           force_orphan: true
