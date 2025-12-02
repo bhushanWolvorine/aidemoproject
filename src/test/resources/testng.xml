@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Demo Tests RAG and Orchestration">
-<!-- <listeners>
+ <listeners>
     <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
-</listeners> -->
+</listeners> 
     <test name="All Tests">
     
         <classes>

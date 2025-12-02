@@ -12,8 +12,8 @@ import com.aidemoproject.websocket.client.GenericWebSocketClient;
 
 import io.qameta.allure.*;
 
-@Epic("AI Agent Validation Framework")
-@Feature("End-to-End Journey Testing")
+//@Epic("AI Agent Validation Framework")
+//@Feature("End-to-End Journey Testing")
 public class BaseTest {
 
  protected GenericWebSocketClient ws;
