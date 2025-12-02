@@ -31,7 +31,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Set up Node.js 20 (fixes wait-on)
+      - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -42,22 +42,19 @@ jobs:
 
       - name: Start Mock Server
         run: |
-          echo "Starting UPI Mock Server..."
           npm start > mock-server.log 2>&1 &
-          echo "Mock server started (PID: $!)"
+          echo "Mock server started"
 
-          # Reliable health check using curl (no wait-on needed)
-          echo "Waiting for HTTP health endpoint..."
+          echo "Waiting for health endpoint..."
           for i in {1..30}; do
             if curl -f http://localhost:3000/health >/dev/null 2>&1; then
-              echo "HTTP health OK!"
+              echo "HTTP ready!"
               break
             fi
             sleep 2
           done
 
-          # Reliable WebSocket check using ncat (built-in)
-          echo "Waiting for WebSocket on port 8765..."
+          echo "Waiting for WebSocket..."
           for i in {1..30}; do
             if echo | ncat -w 1 localhost 8765 >/dev/null 2>&1; then
               echo "WebSocket ready!"
@@ -76,7 +73,13 @@ jobs:
             sleep 5
           done
 
-      - name: Run Full Test Suite
+      - name: Install Allure CLI
+        run: |
+          curl -L -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip -q allure.zip -d ~/allure
+          echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
+
+      - name: Run Tests
         run: |
           mvn clean test -B \
             -Dwebsocket.url=ws://localhost:8765 \
