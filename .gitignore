@@ -5,7 +5,7 @@
 *.jar
 *.war
 *.ear
-
+node_modules/
 # Maven
 /target/
 pom.xml.tag
