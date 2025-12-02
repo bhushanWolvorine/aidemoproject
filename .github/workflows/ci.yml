@@ -1,4 +1,5 @@
-name: AI Agent
+# .github/workflows/ci.yml
+name: AI Agent CI/CD — Full Validation (Self-Contained)
 
 on:
   push:
@@ -11,23 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    # Everything runs inside GitHub Actions — no dependency on your laptop
+    # Services — your mock server + ReportPortal
     services:
-      # 1. Your UPI Mock Server (Node.js)
+      # 1. UPI Mock Server (Node.js)
       mock-server:
         image: node:18-alpine
         ports:
           - 8765:8765
         volumes:
           - ./server.js:/app/server.js
-        working-directory: /app
+        command: ["sh", "-c", "cd /app && node server.js"]
         options: >-
           --health-cmd "curl -f http://localhost:3000/health || exit 1"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
 
-      # 2. ReportPortal — lightweight UI-only version (fastest, < 1 GB RAM)
+      # 2. ReportPortal (lightweight)
       reportportal:
         image: reportportal/service-ui:5.14.2
         ports:
@@ -51,7 +52,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven packages
+      - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
           path: ~/.m2
@@ -60,6 +61,7 @@ jobs:
 
       - name: Wait for Mock Server
         run: |
+          echo "Waiting for mock server..."
           for i in {1..30}; do
             if curl -f http://localhost:3000/health; then
               echo "Mock server ready!"
@@ -73,13 +75,13 @@ jobs:
           echo "Waiting for ReportPortal..."
           for i in {1..40}; do
             if curl -f http://localhost:8080/api/v1/user > /dev/null 2>&1; then
-              echo "ReportPortal is UP!"
+              echo "ReportPortal ready!"
               break
             fi
             sleep 5
           done
 
-      - name: Run Full Test Suite → Live Upload to ReportPortal
+      - name: Run Full Test Suite → Upload to ReportPortal
         run: |
           mvn clean test -B \
             -Dwebsocket.url=ws://localhost:8765 \
@@ -95,7 +97,7 @@ jobs:
         run: |
           allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Allure Report (Downloadable)
+      - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -103,7 +105,7 @@ jobs:
           path: target/allure-report
           retention-days: 30
 
-      - name: Publish Allure to GitHub Pages (on main)
+      - name: Deploy Allure to GitHub Pages (on main)
         if: success() && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -115,4 +117,3 @@ jobs:
         run: |
           echo "AI AGENT VALIDATION FAILED — BLOCKING DEPLOYMENT"
           exit 1
-
