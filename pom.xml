@@ -7,7 +7,7 @@
     <groupId>com.aidemoproject</groupId>
     <artifactId>aidemoproject</artifactId>
     <version>1.0.0</version>
-    <name>aidemoproject</name>
+    <name>AI Demo Project</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -21,7 +21,7 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.8.0</version>
-            
+           
         </dependency>
 
         <!-- Allure TestNG -->
@@ -29,10 +29,9 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>2.27.0</version>
-          
+            
         </dependency>
 
-        <!-- ReportPortal TestNG — FIXED VERSION 5.5.0 -->
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>agent-java-testng</artifactId>
@@ -53,28 +52,20 @@
             <artifactId>service</artifactId>
             <version>0.18.2</version>
         </dependency>
-        
-        
-        
-        
 
-
-
-
-
-        <!-- WebSocket Client -->
+        <!-- WebSocket -->
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
         </dependency>
 
-        <!-- MongoDB Driver -->
+        <!-- MongoDB -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>5.1.0</version>
-           
+            
         </dependency>
 
         <!-- Lombok -->
@@ -82,7 +73,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
-           <!--  <scope>provided</scope> -->
+            
         </dependency>
 
         <!-- RestAssured -->
@@ -100,14 +91,14 @@
             <version>2.18.2</version>
         </dependency>
 
-        <!-- SLF4J + Logback -->
+        <!-- Logback (for ReportPortal) -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
         </dependency>
 
-        <!-- AspectJ Weaver (Allure) -->
+        <!-- AspectJ (Allure) -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -117,7 +108,7 @@
 
     <build>
         <plugins>
-            <!-- Compiler — Java 17 -->
+            <!-- Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -127,16 +118,20 @@
                 </configuration>
             </plugin>
 
-            <!-- Surefire — Allure + ReportPortal + Parallel -->
+            <!-- Surefire — RUNS ONLY testng.xml -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
+                    <!-- THIS LINE IS THE KEY -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
 
-                    <!-- Allure + ReportPortal -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
                     </argLine>
@@ -150,10 +145,6 @@
                             </value>
                         </property>
                     </properties>
-
-                    <systemPropertyVariables>
-                        <allure.results.directory>target/allure-results</allure.results.directory>
-                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>

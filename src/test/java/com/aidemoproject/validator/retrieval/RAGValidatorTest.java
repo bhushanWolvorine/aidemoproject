@@ -1,4 +1,3 @@
-// src/test/java/com/aidemoproject/validation/RAGValidatorTest.java
 package com.aidemoproject.validator.retrieval;
 
 import java.util.ArrayList;

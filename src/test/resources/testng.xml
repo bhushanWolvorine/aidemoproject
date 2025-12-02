@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Apex LLM Tests">
+<suite name="Demo Tests RAG and Orchestration">
 <!-- <listeners>
     <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
 </listeners> -->
