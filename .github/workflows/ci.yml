@@ -1,5 +1,5 @@
 # .github/workflows/ci.yml
-name: AI Agent CI/CD — Full Validation
+name: AI Agent CI/CD — Final Working Version
 
 on:
   push:
@@ -13,7 +13,6 @@ jobs:
     timeout-minutes: 20
 
     services:
-      # ReportPortal — lightweight UI-only (fast)
       reportportal:
         image: reportportal/service-ui:5.14.2
         ports:
@@ -32,29 +31,30 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      # Start your mock server as a background process (no services needed)
-      - name: Start UPI Mock Server
+      - name: Start Mock Server (with proper delay)
         run: |
-          echo "Starting mock server..."
+          echo "Starting UPI Mock Server..."
           node server.js > mock-server.log 2>&1 &
-          echo "Mock server started (PID: $!)"
+          MOCK_PID=$!
+          echo "Mock server PID: $MOCK_PID"
 
-      - name: Wait for Mock Server Health
-        run: |
+          # Wait for WebSocket port to be open (critical!)
+          echo "Waiting for WebSocket on port 8765..."
           for i in {1..30}; do
-            if curl -f http://localhost:3000/health; then
-              echo "Mock server ready!"
+            if curl -f http://localhost:3000/health >/dev/null 2>&1; then
+              echo "Health check passed! Server ready."
               break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "Mock server failed to start!"
+              cat mock-server.log
+              exit 1
             fi
             sleep 2
           done
+
+          # Extra: wait for WebSocket specifically
+          npx wait-on ws://localhost:8765 --timeout 30000
 
       - name: Wait for ReportPortal
         run: |
@@ -66,7 +66,7 @@ jobs:
             sleep 5
           done
 
-      - name: Run Full Test Suite → Upload to ReportPortal
+      - name: Run Tests
         run: |
           mvn clean test -B \
             -Dwebsocket.url=ws://localhost:8765 \
@@ -76,24 +76,13 @@ jobs:
             -Dreportportal.project=default_personal \
             -Dreportportal.launch="CI #${{ github.run_number }}"
 
-      - name: Generate Allure Report
-        if: always()
-        run: allure generate target/allure-results --clean -o target/allure-report
-
-      - name: Upload Allure Report
+      - name: Generate & Upload Allure
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/allure-report
 
-      - name: Deploy to GitHub Pages
-        if: success() && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/allure-report
-
-      - name: Show Mock Server Logs (on failure)
+      - name: Show Mock Server Logs on Failure
         if: failure()
         run: cat mock-server.log || true
