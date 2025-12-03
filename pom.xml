@@ -13,6 +13,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <allure.version>2.27.0</allure.version>
     </properties>
 
     <dependencies>
@@ -28,132 +29,68 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
-            <version>2.27.0</version>
+            <version>${allure.version}</version>
 
         </dependency>
 
-        <!--  <dependency>
-             <groupId>com.epam.reportportal</groupId>
-             <artifactId>agent-java-testng</artifactId>
-             <version>5.5.0</version>
-
-         </dependency>
-
-         ReportPortal Logback Logger — FIXED VERSION 5.5.0
-         <dependency>
-             <groupId>com.epam.reportportal</groupId>
-             <artifactId>logger-java-logback</artifactId>
-             <version>5.1.0</version>
-         </dependency>
-  -->
-
-
-        <!-- ReportPortal TestNG Agent -->
-        <!-- <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>agent-java-testng</artifactId>
-            <version>5.5.0</version>
-            <scope>test</scope>
-        </dependency> -->
-
-        <!-- ReportPortal Logback Logger — Updated to compatible version -->
-        <!-- <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>logger-java-logback</artifactId>
-            <version>5.1.1</version>
-            <scope>test</scope>
-        </dependency>
-     -->
-
-        <!--  <dependency>
-             <groupId>ch.qos.logback</groupId>
-             <artifactId>logback-classic</artifactId>
-             <version>1.4.14</version>
-         </dependency>
-          -->
-
-
-
-
-
-        <!-- ReportPortal TestNG Agent (your version) -->
+        <!-- ReportPortal -->
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>agent-java-testng</artifactId>
             <version>5.5.0</version>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- ReportPortal Logback Logger (fixed to available 5.1.1) -->
+        </dependency>
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>logger-java-logback</artifactId>
             <version>5.1.1</version>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- Logback Classic (required for logger-java-logback) -->
+        </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
         </dependency>
 
+        <!-- AspectJ Weaver (Allure) -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.22</version>
+        </dependency>
 
-
-
-        <!-- OpenAI Judge -->
+        <!-- Your other dependencies (OpenAI, WebSocket, MongoDB, Lombok, RestAssured, Jackson) -->
         <dependency>
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
             <version>0.18.2</version>
         </dependency>
-
-        <!-- WebSocket -->
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
             <version>1.5.3</version>
         </dependency>
-
-        <!-- MongoDB -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>5.1.0</version>
-
         </dependency>
-
-        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
 
         </dependency>
-
-        <!-- RestAssured -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.5.0</version>
-
+          
         </dependency>
-
-        <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.18.2</version>
-        </dependency>
-
-        <!-- Logback (for ReportPortal) - Already defined above, removing duplicate -->
-
-        <!-- AspectJ (Allure) -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.22</version>
         </dependency>
     </dependencies>
 
@@ -169,8 +106,7 @@
                 </configuration>
             </plugin>
 
-
-            <!-- Surefire Plugin — generates both XML + FULL HTML reports -->
+            <!-- SUREFIRE: THE ONE AND ONLY — GUARANTEED TO GENERATE EMAILED REPORT -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -183,21 +119,19 @@
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
 
-                    <!-- Allure + ReportPortal listeners -->
+                    <!-- ALL LISTENERS + EMAILED REPORTER (this is the magic) -->
                     <properties>
                         <property>
                             <name>listener</name>
-                            <value>io.qameta.allure.testng.AllureTestNg,com.epam.reportportal.testng.ReportPortalTestNGListener</value>
+                            <value>
+                                io.qameta.allure.testng.AllureTestNg,
+                                com.epam.reportportal.testng.ReportPortalTestNGListener,
+                                org.testng.reporters.EmailableReporter
+                            </value>
                         </property>
                     </properties>
 
-                    <!-- Critical: Force HTML report generation -->
-                    <reportFormat>plain</reportFormat>
-                    <useFile>false</useFile>
-                    <trimStackTrace>false</trimStackTrace>
-
-                    <!-- This enables the full HTML report (index.html + emailable-report.html) -->
-                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <!-- Force Allure results directory -->
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
@@ -206,83 +140,20 @@
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
                         -Dallure.results.directory=${project.build.directory}/allure-results
                     </argLine>
+
+                    <reportFormat>plain</reportFormat>
+                    <useFile>false</useFile>
+                    <trimStackTrace>false</trimStackTrace>
                 </configuration>
             </plugin>
-            <!-- Surefire — RUNS ONLY testng.xml -->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>3.1.2</version>-->
-<!--                <configuration>-->
-<!--                    &lt;!&ndash; THIS LINE IS THE KEY &ndash;&gt;-->
-<!--                    <suiteXmlFiles>-->
-<!--                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>-->
-<!--                    </suiteXmlFiles>-->
 
-<!--                    <parallel>methods</parallel>-->
-<!--                    <threadCount>10</threadCount>-->
-
-<!--                    <argLine>-->
-<!--                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"-->
-<!--                    </argLine>-->
-
-<!--                    <properties>-->
-<!--                        <property>-->
-<!--                            <name>listener</name>-->
-<!--                            <value>-->
-<!--                                io.qameta.allure.testng.AllureTestNg,-->
-<!--                                com.epam.reportportal.testng.ReportPortalTestNGListener-->
-<!--                            </value>-->
-<!--                        </property>-->
-<!--                    </properties>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>3.2.5</version>-->
-<!--                <configuration>-->
-<!--                    <suiteXmlFiles>-->
-<!--                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>-->
-<!--                    </suiteXmlFiles>-->
-
-<!--                    <parallel>methods</parallel>-->
-<!--                    <threadCount>10</threadCount>-->
-
-<!--                    &lt;!&ndash; THIS IS THE CRITICAL PART THAT WORKS IN CI &ndash;&gt;-->
-<!--                    <argLine>-->
-<!--                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"-->
-<!--                        -Dallure.results.directory=${project.build.directory}/allure-results-->
-<!--                    </argLine>-->
-
-<!--                    <properties>-->
-<!--                        <property>-->
-<!--                            <name>listener</name>-->
-<!--                            <value>io.qameta.allure.testng.AllureTestNg,com.epam.reportportal.testng.ReportPortalTestNGListener</value>-->
-<!--                        </property>-->
-<!--                    </properties>-->
-
-<!--                    &lt;!&ndash; Force creation of allure-results directory &ndash;&gt;-->
-<!--                    <systemPropertyVariables>-->
-<!--                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>-->
-<!--                    </systemPropertyVariables>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
-
-
-
-
-            <!-- Allure Maven Plugin -->
+            <!-- Allure Maven Plugin (optional but safe) -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.12.0</version>   <!-- or latest -->
+                <version>2.12.0</version>
                 <configuration>
-                    <reportVersion>2.27.0</reportVersion>   <!-- match your CLI -->
-                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                    <reportVersion>${allure.version}</reportVersion>
                 </configuration>
             </plugin>
         </plugins>
