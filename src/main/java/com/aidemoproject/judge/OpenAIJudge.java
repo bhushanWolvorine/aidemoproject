@@ -12,8 +12,8 @@ public class OpenAIJudge {
 
     
     public OpenAIJudge() {
-//        String apiKey = System.getenv("OPENAI_API_KEY");
-        String apiKey = "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";
+        String apiKey = System.getenv("OPENAI_API_KEY");
+     //   String apiKey = "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";
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalStateException("OPENAI_API_KEY environment variable not set");
         }

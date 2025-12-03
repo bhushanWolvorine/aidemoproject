@@ -3,6 +3,9 @@ package com.aidemoproject.validator.prompt;
 
 import java.util.List;
 
+import com.aidemoproject.basevalidators.prompt.PromptValidationReport;
+import com.aidemoproject.basevalidators.prompt.PromptValidator;
+import com.aidemoproject.basevalidators.prompt.UpiPromptValidator;
 import org.testng.annotations.Test;
 
 import com.aidemoproject.base.BaseTest;

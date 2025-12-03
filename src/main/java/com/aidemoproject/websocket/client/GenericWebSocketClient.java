@@ -57,7 +57,7 @@ public class GenericWebSocketClient {
      LoggerUtil.info("WebSocket ready for testing");
  }
 
- // === PUBLIC API ===
+
 
  public void send(String sessionId, String text, String language) throws Exception {
      String json = String.format(
@@ -82,7 +82,7 @@ public class GenericWebSocketClient {
          if (msg != null) {
              System.out.println("CHECKING: " + msg);
              if (msg.toLowerCase().contains(keyword.toLowerCase())) {
-                 System.out.println("MATCHED keyword: " + keyword);
+            	 LoggerUtil.info("MATCHED keyword: " + keyword);
                  return msg;
              }
          }
@@ -101,7 +101,7 @@ public class GenericWebSocketClient {
      }
  }
 
- // === FOR BaseTest TO HOOK INTO ===
+
  public void setMessageHandler(Consumer<String> handler) {
      this.messageHandler = handler;
  }

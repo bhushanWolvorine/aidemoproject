@@ -3,7 +3,7 @@ package com.aidemoproject.base.validator;
 import java.util.List;
 import java.util.Set;
 
-import com.aidemoproject.validator.hallucination.HallucinationValidator;
+import com.aidemoproject.basevalidators.hallucination.HallucinationValidator;
 
 /**
  * UPI-specific hallucination detector Can be swapped with
@@ -42,6 +42,9 @@ public class UpiHallucinationValidator implements HallucinationValidator {
 	
 	
 	// Only flag hallucination if agent CLAIMS action but tool was NEVER called
+    // journeyContext is sessionid for mongo queries
+    // We check that the socket messages contains for the keywords and the tool call for that specific
+    // word is also made.
 	@Override
 	public boolean hasHallucination(List<String> conversationLog, String journeyContext) {
 	    boolean sentOtpTool = containsToolCall(conversationLog, "send_otp");

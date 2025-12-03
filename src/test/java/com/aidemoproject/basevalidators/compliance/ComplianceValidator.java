@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.compliance;
+package com.aidemoproject.basevalidators.compliance;
 
 
 

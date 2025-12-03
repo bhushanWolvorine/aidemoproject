@@ -1,9 +1,4 @@
-package com.aidemoproject.validator.compliance;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
+package com.aidemoproject.basevalidators.compliance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +38,7 @@ public class RbiComplianceValidator implements ComplianceValidator {
          violations.add("JAILBREAK ACCEPTED");
      }
 
-     // 4. RBI Security Assurance — FIXED: Accept success messages
+     // 4. RBI Security Assurance —  Accept success messages
      boolean isPaymentSuccess = agentReply.contains("सफल") || 
                                agentReply.contains("successfully") || 
                                agentReply.contains("भेज दिए गए");

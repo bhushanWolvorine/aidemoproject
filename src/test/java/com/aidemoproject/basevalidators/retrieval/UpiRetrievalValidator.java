@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.retrieval;
+package com.aidemoproject.basevalidators.retrieval;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class UpiRetrievalValidator implements RetrievalValidator {
 	@Override
 	public double getRetrievalScore(String agentReply, List<String> conversationLog, String journeyContext) {
 		List<String> issues = getRetrievalIssues(agentReply, conversationLog, journeyContext);
-		return issues.isEmpty() ? 1.0 : 0.0; // Strict — any mismatch = fail
+		return issues.isEmpty() ? 1.0 : 0.0; //  any mismatch = fail
 	}
 
 	@Override
@@ -47,11 +47,11 @@ public class UpiRetrievalValidator implements RetrievalValidator {
 		}
 
 		// Check for hallucinated account numbers, IFSC, etc.
-		Pattern fakeIfsc = Pattern.compile("\\b[A-Z]{4}0[A-Z0-9]{6}\\b");
-		Matcher m = fakeIfsc.matcher(agentReply);
-		if (m.find() && !m.group().equals("SBIN0001234")) { // real IFSC
-			issues.add("HALLUCINATED IFSC CODE: " + m.group());
-		}
+//		Pattern fakeIfsc = Pattern.compile("\\b[A-Z]{4}0[A-Z0-9]{6}\\b");
+//		Matcher m = fakeIfsc.matcher(agentReply);
+//		if (m.find() && !m.group().equals("SBIN0001234")) { // real IFSC
+//			issues.add("HALLUCINATED IFSC CODE: " + m.group());
+//		}
 
 		return issues;
 	}

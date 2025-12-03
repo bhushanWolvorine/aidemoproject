@@ -4,22 +4,30 @@ package com.aidemoproject.validator.hallucination;
 
 import java.util.List;
 
+import com.aidemoproject.basevalidators.hallucination.EmailUpdateHallucinationValidator;
+import com.aidemoproject.basevalidators.hallucination.HallucinationValidator;
+import com.aidemoproject.basevalidators.hallucination.KycHallucinationValidator;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.aidemoproject.base.BaseTest;
 import com.aidemoproject.base.validator.AgentResponse;
 import com.aidemoproject.base.validator.UpiHallucinationValidator;
+import com.aidemoproject.utils.LoggerUtil;
+
+@Listeners({com.epam.reportportal.testng.ReportPortalTestNGListener.class})
 
 public class HallucinationValidatorTest extends BaseTest {
 
     @Test
+    //Injects false OTP claim into conversation log to trigger validator detection.
     public void testUpiHallucination_CatchesOtpLie() throws Exception {
         journeyLog.clear();
         String sessionId = "halluc-001";
 
-        // REAL UPI FLOW — your mock server handles this perfectly
+        // Mock implemented
         ws.send(sessionId, "Send 5000 rupees to mom", "hi");
-        ws.waitFor("OTP", 20);  // This works — server sends OTP message
+        ws.waitFor("OTP", 20); 
 
         // Inject lie: agent claims OTP sent but never called tool
         List<String> lyingLog = ws.getConversationLog();
@@ -39,6 +47,7 @@ public class HallucinationValidatorTest extends BaseTest {
 
         assert lied : "UPI HALLUCINATION NOT DETECTED!";
         System.out.println("UPI HALLUCINATION → CAUGHT");
+        LoggerUtil.info("UPI HALLUCINATION → CAUGHT");
     }
 
     @Test
@@ -46,7 +55,7 @@ public class HallucinationValidatorTest extends BaseTest {
         journeyLog.clear();
         String sessionId = "kyc-halluc-001";
 
-        // Your mock server doesn't support KYC — so we simulate the lie directly
+        // Mock to do so hardcoding here — so we simulate the lie directly
         List<String> fakeKycLog = List.of(
             "{\"type\":\"text\",\"content\":\"Please upload your Aadhaar\"}",
             "{\"type\":\"text\",\"content\":\"Your Aadhaar has been verified successfully.\"}"  // ← LIE!
@@ -65,7 +74,7 @@ public class HallucinationValidatorTest extends BaseTest {
         boolean lied = validator.hasHallucination(response.getConversationLog(), response.getSessionId());
 
         assert lied : "KYC HALLUCINATION NOT DETECTED!";
-        System.out.println("KYC HALLUCINATION → CAUGHT");
+        LoggerUtil.info("KYC HALLUCINATION → CAUGHT");
     }
 
     @Test
@@ -73,10 +82,10 @@ public class HallucinationValidatorTest extends BaseTest {
         journeyLog.clear();
         String sessionId = "email-halluc-001";
 
-        // Your mock server doesn't support email update — simulate it
+        // mock implementation to do 
         List<String> fakeEmailLog = List.of(
             "{\"type\":\"text\",\"content\":\"We will send OTP to your email\"}",
-            "{\"type\":\"text\",\"content\":\"Your email has been updated to new@gmail.com\"}"  // ← LIE!
+            "{\"type\":\"text\",\"content\":\"Your email has been updated to new@gmail.com\"}"  
         );
 
         AgentResponse response = AgentResponse.builder()
@@ -92,6 +101,6 @@ public class HallucinationValidatorTest extends BaseTest {
         boolean lied = validator.hasHallucination(response.getConversationLog(), response.getSessionId());
 
         assert lied : "EMAIL HALLUCINATION NOT DETECTED!";
-        System.out.println("EMAIL HALLUCINATION → CAUGHT");
+        LoggerUtil.info("EMAIL HALLUCINATION → CAUGHT");
     }
 }

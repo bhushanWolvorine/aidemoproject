@@ -1,19 +1,18 @@
-package com.aidemoproject.validator.compliance;
-
-import org.testng.annotations.Test;
+package com.aidemoproject.validator.orchestration;
 
 import com.aidemoproject.base.BaseTest;
 import com.aidemoproject.base.validator.AgentResponse;
 import com.aidemoproject.base.validator.UpiOrchestrationValidator;
 import com.aidemoproject.base.validator.UpiPaymentValidator;
 import com.aidemoproject.base.validator.ValidationReport;
+import org.testng.annotations.Test;
 
 public class TestOrchestartion extends BaseTest {
 	
 	
 	@Test
     public void testUpiPayment_NormalFlow_NoDuplicates_MustPass() throws Exception {
-        journeyLog.clear(); // Clear any old data
+        journeyLog.clear();
 
         String sessionId = "normal-001";
 
@@ -22,8 +21,7 @@ public class TestOrchestartion extends BaseTest {
         ws.send(sessionId, "123456", "hi");
         ws.waitFor("भेज दिया", 30);
 
-        // CRITICAL FIX: Use the client's clean log — NOT journeyLog from BaseTest
-        // Because BaseTest may have double-logged or not logged at all
+
         var cleanLog = ws.getConversationLog();
 
         System.out.println("Actual tool sequence: " + 
@@ -32,7 +30,7 @@ public class TestOrchestartion extends BaseTest {
         AgentResponse response = AgentResponse.builder()
             .statusCode(200)
             .body("सुरक्षित रूप से भेज दिया गया")
-            .conversationLog(cleanLog)           // ← USE THIS
+            .conversationLog(cleanLog)
             .sessionId(sessionId)
             .userMessage("Send 5000...")
             .journeyType("upi")

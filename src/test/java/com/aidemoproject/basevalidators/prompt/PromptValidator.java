@@ -1,6 +1,4 @@
-package com.aidemoproject.validator.prompt;
-
-import java.util.List;
+package com.aidemoproject.basevalidators.prompt;
 
 /**
  * Validates that the actual prompt sent to LLM hasn't regressed Catches:

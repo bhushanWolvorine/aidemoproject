@@ -3,6 +3,8 @@ package com.aidemoproject.validator.retrieval;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aidemoproject.basevalidators.retrieval.RetrievalValidator;
+import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
 import org.testng.annotations.Test;
 
 import com.aidemoproject.base.BaseTest;

@@ -1,13 +1,19 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Demo Tests RAG and Orchestration">
-<!-- <listeners>
-    <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
-</listeners> -->
+
+    <listeners>
+        <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
+    </listeners>
     <test name="All Tests">
     
         <classes>
-            <class name="com.aidemoproject.validator.retrieval.RAGValidatorTest"/>
-            <class name="com.aidemoproject.validator.compliance.TestOrchestartion"/>
+<!--             <class name="com.aidemoproject.validator.retrieval.RAGValidatorTest"/>-->
+            <class name="com.aidemoproject.validator.orchestration.TestFlowOrchestartion"/>
+             
+<!--            <class name="com.aidemoproject.validator.hallucination.HallucinationValidatorTest"/>-->
+            
+            
+            
         </classes>
     </test>
 </suite>

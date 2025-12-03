@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.hallucination;
+package com.aidemoproject.basevalidators.hallucination;
 
 
 import java.util.List;

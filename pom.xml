@@ -32,19 +32,75 @@
             
         </dependency>
 
-        <dependency>
+       <!--  <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>agent-java-testng</artifactId>
             <version>5.5.0</version>
            
         </dependency>
 
-        <!-- ReportPortal Logback Logger — FIXED VERSION 5.5.0 -->
+        ReportPortal Logback Logger — FIXED VERSION 5.5.0
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>logger-java-logback</artifactId>
             <version>5.1.0</version>
         </dependency>
+ -->
+ 
+
+    <!-- ReportPortal TestNG Agent -->
+    <!-- <dependency>
+        <groupId>com.epam.reportportal</groupId>
+        <artifactId>agent-java-testng</artifactId>
+        <version>5.5.0</version>
+        <scope>test</scope>
+    </dependency> -->
+
+    <!-- ReportPortal Logback Logger — Updated to compatible version -->
+    <!-- <dependency>
+        <groupId>com.epam.reportportal</groupId>
+        <artifactId>logger-java-logback</artifactId>
+        <version>5.1.1</version>
+        <scope>test</scope>
+    </dependency>
+ -->
+    
+   <!--  <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.4.14</version>
+    </dependency>
+     -->
+    
+    
+    
+    
+    
+    <!-- ReportPortal TestNG Agent (your version) -->
+<dependency>
+    <groupId>com.epam.reportportal</groupId>
+    <artifactId>agent-java-testng</artifactId>
+    <version>5.5.0</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- ReportPortal Logback Logger (fixed to available 5.1.1) -->
+<dependency>
+    <groupId>com.epam.reportportal</groupId>
+    <artifactId>logger-java-logback</artifactId>
+    <version>5.1.1</version>
+    <scope>test</scope>
+</dependency>
+
+<!-- Logback Classic (required for logger-java-logback) -->
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.4.14</version>
+</dependency>
+    
+    
+    
 
         <!-- OpenAI Judge -->
         <dependency>
@@ -91,12 +147,7 @@
             <version>2.18.2</version>
         </dependency>
 
-        <!-- Logback (for ReportPortal) -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.4.14</version>
-        </dependency>
+        <!-- Logback (for ReportPortal) - Already defined above, removing duplicate -->
 
         <!-- AspectJ (Allure) -->
         <dependency>

@@ -6,16 +6,11 @@ package com.aidemoproject.validator.compliance;
 
 import com.aidemoproject.base.BaseTest;
 import com.aidemoproject.base.validator.AgentResponse;
-import com.aidemoproject.base.validator.UpiHallucinationValidator;
-import com.aidemoproject.base.validator.UpiOrchestrationValidator;
 import com.aidemoproject.base.validator.UpiPaymentValidator;
 import com.aidemoproject.base.validator.ValidationReport;
 import com.aidemoproject.judge.OpenAIJudge;
-import com.aidemoproject.validator.retrieval.UpiRetrievalValidator;
 
 import org.testng.annotations.Test;
-
-import java.util.List;
 
 public class FullValidationJourneyTest extends BaseTest {
 

@@ -1,13 +1,14 @@
-package com.aidemoproject.validator.orchestration;
+package com.aidemoproject.basevalidators.orchestration;
 
 import java.util.List;
 
-public class EmailUpdateOrchestrationValidator implements OrchestrationValidator {
-	private static final List<String> SEQ = List.of("validate_email", "send_otp", "verify_otp");
+public class KycOrchestrationValidator implements OrchestrationValidator {
+	private static final List<String> SEQ = List.of("initiate_kyc", "upload_document", "verify_document");
 
+	// ... same logic
 	@Override
 	public String getJourneyName() {
-		return "Email Update";
+		return "KYC";
 	}
 
 	@Override

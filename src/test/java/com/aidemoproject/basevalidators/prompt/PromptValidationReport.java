@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.prompt;
+package com.aidemoproject.basevalidators.prompt;
 
 import java.util.Collections;
 import java.util.List;

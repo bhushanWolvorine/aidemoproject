@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.retrieval;
+package com.aidemoproject.basevalidators.retrieval;
 
 import java.util.List;
 

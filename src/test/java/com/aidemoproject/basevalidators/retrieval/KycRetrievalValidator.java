@@ -1,13 +1,13 @@
-package com.aidemoproject.validator.retrieval;
+package com.aidemoproject.basevalidators.retrieval;
 
 import java.util.List;
 
-public class InsuranceRetrievalValidator implements RetrievalValidator {
+public class KycRetrievalValidator implements RetrievalValidator {
 	@Override
 	public String getJourneyName() {
-		return "Insurance Policy";
+		return "KYC Retrieval";
 	}
-	// Validate policy number, premium, expiry from insurer DB
+	// Validate Aadhaar name, DOB, address from DigiLocker
 
 	@Override
 	public boolean isRetrievalAccurate(String agentReply, List<String> conversationLog, String journeyContext) {

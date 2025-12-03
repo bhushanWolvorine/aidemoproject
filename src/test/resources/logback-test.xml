@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="RP" class="com.epam.reportportal.logback.appender.ReportPortalAppender"/>
+    <!-- ReportPortal Appender — forwards all LoggerUtil calls to ReportPortal -->
+    <appender name="RP" class="com.epam.reportportal.logback.appender.ReportPortalAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Console Appender (backup) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger — send INFO+ to ReportPortal + console -->
     <root level="INFO">
         <appender-ref ref="RP"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
 
 
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="RP" class="com.epam.reportportal.logback.appender.ReportPortalAppender"/>
+    <root level="INFO">
+        <appender-ref ref="RP"/>
+    </root>
+</configuration> -->

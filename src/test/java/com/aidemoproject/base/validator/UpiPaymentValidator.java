@@ -3,14 +3,14 @@ package com.aidemoproject.base.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.aidemoproject.validator.compliance.ComplianceReport;
-import com.aidemoproject.validator.compliance.ComplianceValidator;
-import com.aidemoproject.validator.compliance.RbiComplianceValidator;
-import com.aidemoproject.validator.hallucination.HallucinationValidator;
-import com.aidemoproject.validator.orchestration.OrchestrationIssue;
-import com.aidemoproject.validator.orchestration.OrchestrationValidator;
-import com.aidemoproject.validator.retrieval.RetrievalValidator;
-import com.aidemoproject.validator.retrieval.UpiRetrievalValidator;
+import com.aidemoproject.basevalidators.compliance.ComplianceReport;
+import com.aidemoproject.basevalidators.compliance.ComplianceValidator;
+import com.aidemoproject.basevalidators.compliance.RbiComplianceValidator;
+import com.aidemoproject.basevalidators.hallucination.HallucinationValidator;
+import com.aidemoproject.basevalidators.orchestration.OrchestrationIssue;
+import com.aidemoproject.basevalidators.orchestration.OrchestrationValidator;
+import com.aidemoproject.basevalidators.retrieval.RetrievalValidator;
+import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
 
 public class UpiPaymentValidator implements AgentResponseValidator {
 

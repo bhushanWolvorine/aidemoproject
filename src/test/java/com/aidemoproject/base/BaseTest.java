@@ -7,8 +7,8 @@ import org.testng.annotations.BeforeClass;
 
 import com.aidemoproject.MongoJourneyLogger;
 import com.aidemoproject.judge.OpenAIJudge;
+import com.aidemoproject.utils.LoggerUtil;
 import com.aidemoproject.websocket.client.GenericWebSocketClient;
-
 
 import io.qameta.allure.*;
 
@@ -16,41 +16,45 @@ import io.qameta.allure.*;
 @Feature("End-to-End Journey Testing")
 public class BaseTest {
 
- protected GenericWebSocketClient ws;
- protected OpenAIJudge judge;
- protected MongoJourneyLogger mongoLogger;
- protected CopyOnWriteArrayList<String> journeyLog;
+	protected GenericWebSocketClient ws;
+	protected OpenAIJudge judge;
+	protected MongoJourneyLogger mongoLogger;
+	protected CopyOnWriteArrayList<String> journeyLog;
 
- @BeforeClass
- public void setup() throws Exception {
-     System.out.println("\n[BASE SETUP] Starting...");
+	@BeforeClass
+	public void setup() throws Exception {
+		System.out.println("\n[BASE SETUP] Starting...");
 
-     // 1. Create log first
-     journeyLog = new CopyOnWriteArrayList<>();
+		// 1. Create log first
+		journeyLog = new CopyOnWriteArrayList<>();
 
-     // 2. Create client — NO @Override anywhere
-     ws = new GenericWebSocketClient("ws://localhost:8765");
+		ws = new GenericWebSocketClient("ws://localhost:8765");
 
-     // 3. Manually hook into the client's message handling
-     ws.setMessageHandler(message -> {
-//         journeyLog.add(message);
-         System.out.println("LOGGED → " + message);
-     });
+		// 3. Manually hook into the client's message handling
+		ws.setMessageHandler(message -> {
 
-     judge = new OpenAIJudge();
-     mongoLogger = new MongoJourneyLogger();
+			System.out.println("LOGGED → " + message);
+		});
 
-     System.out.println("[BASE SETUP] Ready — WebSocket + Judge + Mongo connected");
- }
+		judge = new OpenAIJudge();
+		mongoLogger = new MongoJourneyLogger();
 
- @AfterClass
- public void teardown() throws Exception {
-     System.out.println("\n[BASE TEARDOWN] Cleaning up...");
-     if (ws != null) ws.close();
-     System.out.println("[BASE TEARDOWN] Done");
- }
+		System.out.println("[BASE SETUP] Ready — WebSocket + Judge + Mongo connected");
+		LoggerUtil.info("[BASE SETUP] Ready — WebSocket + Judge + Mongo connected");
+	}
 
- protected void clearLog() {
-     journeyLog.clear();
- }
+	@AfterClass
+	public void teardown() throws Exception {
+		System.out.println("\n[BASE TEARDOWN] Cleaning up...");
+		LoggerUtil.info("\n[BASE TEARDOWN] Cleaning up...");
+		if (ws != null)
+			ws.close();
+		System.out.println("[BASE TEARDOWN] Done");
+		LoggerUtil.info("[BASE TEARDOWN] Done");
+	}
+
+	protected void clearLog() {
+		journeyLog.clear();
+		LoggerUtil.info("journeyLog cleared");
+	}
 }

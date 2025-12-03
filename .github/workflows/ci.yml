@@ -1,4 +1,3 @@
-# .github/workflows/ci.yml
 name: AI Agent CI/CD — Final & Perfect
 
 on:

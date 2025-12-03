@@ -1,15 +1,11 @@
-package com.aidemoproject.validator.orchestration;
+package com.aidemoproject.basevalidators.orchestration;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
-/**
- * Immutable result of orchestration validation Pure class — no records, no
- * preview features
- */
+
 public class OrchestrationIssue {
 
 	private final List<String> missingTools;

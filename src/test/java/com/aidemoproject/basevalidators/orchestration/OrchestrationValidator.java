@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.orchestration;
+package com.aidemoproject.basevalidators.orchestration;
 
 import java.util.List;
 

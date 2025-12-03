@@ -1,5 +1,5 @@
 
-package com.aidemoproject.validator.prompt;
+package com.aidemoproject.basevalidators.prompt;
 
 import java.util.ArrayList;
 import java.util.List;
