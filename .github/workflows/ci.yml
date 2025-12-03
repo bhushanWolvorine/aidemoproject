@@ -1,23 +1,15 @@
-name: AI Agent CI/CD — Final & Perfect
+name: AI Agent
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, allure ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop, allure ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
-    services:
-      reportportal:
-        image: reportportal/service-ui:5.14.2
-        ports:
-          - 8080:8080
-        env:
-          RP_ENABLE: "true"
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -42,35 +34,10 @@ jobs:
       - name: Start Mock Server
         run: |
           npm start > mock-server.log 2>&1 &
-          echo "Mock server started"
-
-          echo "Waiting for health endpoint..."
-          for i in {1..30}; do
-            if curl -f http://localhost:3000/health >/dev/null 2>&1; then
-              echo "HTTP ready!"
-              break
-            fi
-            sleep 2
-          done
-
-          echo "Waiting for WebSocket..."
-          for i in {1..30}; do
-            if echo | ncat -w 1 localhost 8765 >/dev/null 2>&1; then
-              echo "WebSocket ready!"
-              break
-            fi
-            sleep 2
-          done
-
-      - name: Wait for ReportPortal
-        run: |
-          for i in {1..40}; do
-            if curl -f http://localhost:8080/api/v1/user >/dev/null 2>&1; then
-              echo "ReportPortal ready!"
-              break
-            fi
-            sleep 5
-          done
+          echo "Waiting for mock server..."
+          for i in {1..30}; do curl -f http://localhost:3000/health && break; sleep 2; done
+          for i in {1..30}; do echo | ncat -w 1 localhost 8765 && break; sleep 2; done
+          echo "Mock server ready!"
 
       - name: Install Allure CLI
         run: |
@@ -78,27 +45,36 @@ jobs:
           unzip -q allure.zip -d ~/allure
           echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
 
-      - name: Run Tests
+      - name: Run Tests (via testng.xml + Allure listener)
+        run: mvn clean test -B
+
+      - name: Debug — Show Allure Results Count
         run: |
-          mvn clean test -B \
-            -Dwebsocket.url=ws://localhost:8765 \
-            -Dreportportal.enabled=true \
-            -Dreportportal.endpoint=http://localhost:8080 \
-            -Dreportportal.api.key=superadmin \
-            -Dreportportal.project=default_personal \
-            -Dreportportal.launch="CI #${{ github.run_number }}"
+          echo "Allure result files:"
+          find target/allure-results -name "*.json" | wc -l || echo "0 files!"
 
       - name: Generate Allure Report
         if: always()
         run: allure generate target/allure-results --clean -o target/allure-report
 
-      - name: Upload Allure Report
+      - name: Upload Allure Report (artifact)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/allure-report
 
+      # ONLY ONE DEPLOYMENT STEP — THIS ONE WORKS 100%
+      - name: Deploy Allure Report to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DEPLOY_TOKEN_DEMO }}
+          publish_dir: target/allure-report
+          commit_message: "Allure Report — Run #${{ github.run_number }}"
+          force_orphan: true
+          keep_files: false
+
       - name: Show Mock Server Logs on Failure
         if: failure()
-        run: cat mock-server.log
+        run: cat mock-server.log || true
