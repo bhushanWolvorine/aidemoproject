@@ -91,6 +91,34 @@ jobs:
           force_orphan: true
           keep_files: false
 
+      # Generate classic TestNG HTML report
+      - name: Generate TestNG HTML Report
+        if: always()
+        run: |
+          mkdir -p testng-report
+          cp -r target/surefire-reports/html/* testng-report/ 2>/dev/null || echo "No HTML report found, trying old path..."
+          cp -r target/surefire-reports/emailable-report.html testng-report/ 2>/dev/null || true
+          cp -r target/surefire-reports/index.html testng-report/ 2>/dev/null || true
+          # Fallback: copy everything just in case
+          cp -r target/surefire-reports/* testng-report/ 2>/dev/null || true
+          echo "<h1>TestNG Report - Run #${{ github.run_number }}</h1>" > testng-report/index.html
+          echo "<meta http-equiv='refresh' content='0; url=emailable-report.html'>" >> testng-report/index.html
+
+      # Deploy TestNG report to a subfolder on GitHub Pages
+      - name: Deploy TestNG Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DEPLOY_TOKEN_DEMO }}
+          publish_dir: testng-report
+          destination_dir: testng-report           # This creates /testng-report/ URL
+          commit_message: "TestNG Report — Run #${{ github.run_number }}"
+          force_orphan: true
+          keep_files: true                         # Keeps previous reports
+
+
+
+
       - name: Show Mock Server Logs on Failure
         if: failure()
         run: cat mock-server.log || true
