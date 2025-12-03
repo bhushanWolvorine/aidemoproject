@@ -47,7 +47,7 @@ jobs:
 
       # THIS IS THE ONLY CHANGE YOU NEED IN THE COMMAND
       - name: Run Tests with Allure
-        run: mvn clean allure:test -B
+        run: mvn clean test -B
 
       # Debug: Show how many result files were created
       - name: Debug — List Allure Results
