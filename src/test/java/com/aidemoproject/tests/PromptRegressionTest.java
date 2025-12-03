@@ -1,6 +1,7 @@
 
-package com.aidemoproject.validator.prompt;
+package com.aidemoproject.tests;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.aidemoproject.basevalidators.prompt.PromptValidationReport;
@@ -16,9 +17,8 @@ public class PromptRegressionTest extends BaseTest {
 
     @Test
     public void testPromptRegression_UsingRealWebSocketJourney() throws Exception {
-        journeyLog.clear();
-
-        String sessionId = "prompt-reg-001";
+        List<String> journeyLog = new ArrayList<>();
+        String sessionId = sessionId();
 
         // === FULL REAL JOURNEY USING WEBSOCKET ===
         ws.send(sessionId, "Send 5000 rupees to mom", "hi");

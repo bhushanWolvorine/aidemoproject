@@ -20,20 +20,20 @@ public class RAGValidatorTest extends BaseTest {
 
         String sessionId = "rag-test-001";
 
-        // === STEP 1: Send a payment request — your mock server handles this perfectly ===
-        ws.send(sessionId, "Send 5000 rupees to mom", "hi");
-        ws.waitFor("OTP", 20);           // This works — server sends OTP message
-        ws.send(sessionId, "123456", "hi");
-        ws.waitFor("भेज दिया", 30);     // This works — server sends success message
 
-        // === NOW WE HAVE A REAL CONVERSATION LOG — NO TIMEOUT! ===
+        ws.send(sessionId, "Send 5000 rupees to mom", "hi");
+        ws.waitFor("OTP", 20);
+        ws.send(sessionId, "123456", "hi");
+        ws.waitFor("भेज दिया", 30);
+
+
         List<String> realLog = ws.getConversationLog();
         String finalReply = realLog.get(realLog.size() - 1);
 
         System.out.println("\nRAG VALIDATOR TEST — USING REAL PAYMENT FLOW");
         System.out.println("Final reply: " + finalReply);
 
-        // === TEST 1: SIMULATE STALE DATA IN SUCCESS MESSAGE ===
+        // Stale Data
         String staleReply = "सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है। (पुराना डेटा)";
         String correctReply = "सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।";
 
@@ -59,8 +59,7 @@ public class RAGValidatorTest extends BaseTest {
         System.out.println("Reply: " + staleReply);
         System.out.println("Issues found: " + staleIssues);
 
-        // You can make this strict or lenient based on your needs
-        // For now, we just prove the validator is called
+
         assert ragValidator.getRetrievalScore(staleResponse.getBody(), staleResponse.getConversationLog(), "payment") <= 1.0;
         System.out.println("STALE DATA TESTED SUCCESSFULLY");
 

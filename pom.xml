@@ -21,7 +21,7 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.8.0</version>
-           
+
         </dependency>
 
         <!-- Allure TestNG -->
@@ -29,78 +29,78 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>2.27.0</version>
-            
+
         </dependency>
 
-       <!--  <dependency>
+        <!--  <dependency>
+             <groupId>com.epam.reportportal</groupId>
+             <artifactId>agent-java-testng</artifactId>
+             <version>5.5.0</version>
+
+         </dependency>
+
+         ReportPortal Logback Logger — FIXED VERSION 5.5.0
+         <dependency>
+             <groupId>com.epam.reportportal</groupId>
+             <artifactId>logger-java-logback</artifactId>
+             <version>5.1.0</version>
+         </dependency>
+  -->
+
+
+        <!-- ReportPortal TestNG Agent -->
+        <!-- <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>agent-java-testng</artifactId>
             <version>5.5.0</version>
-           
+            <scope>test</scope>
+        </dependency> -->
+
+        <!-- ReportPortal Logback Logger — Updated to compatible version -->
+        <!-- <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>logger-java-logback</artifactId>
+            <version>5.1.1</version>
+            <scope>test</scope>
+        </dependency>
+     -->
+
+        <!--  <dependency>
+             <groupId>ch.qos.logback</groupId>
+             <artifactId>logback-classic</artifactId>
+             <version>1.4.14</version>
+         </dependency>
+          -->
+
+
+
+
+
+        <!-- ReportPortal TestNG Agent (your version) -->
+        <dependency>
+            <groupId>com.epam.reportportal</groupId>
+            <artifactId>agent-java-testng</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
         </dependency>
 
-        ReportPortal Logback Logger — FIXED VERSION 5.5.0
+        <!-- ReportPortal Logback Logger (fixed to available 5.1.1) -->
         <dependency>
             <groupId>com.epam.reportportal</groupId>
             <artifactId>logger-java-logback</artifactId>
-            <version>5.1.0</version>
+            <version>5.1.1</version>
+            <scope>test</scope>
         </dependency>
- -->
- 
 
-    <!-- ReportPortal TestNG Agent -->
-    <!-- <dependency>
-        <groupId>com.epam.reportportal</groupId>
-        <artifactId>agent-java-testng</artifactId>
-        <version>5.5.0</version>
-        <scope>test</scope>
-    </dependency> -->
+        <!-- Logback Classic (required for logger-java-logback) -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
 
-    <!-- ReportPortal Logback Logger — Updated to compatible version -->
-    <!-- <dependency>
-        <groupId>com.epam.reportportal</groupId>
-        <artifactId>logger-java-logback</artifactId>
-        <version>5.1.1</version>
-        <scope>test</scope>
-    </dependency>
- -->
-    
-   <!--  <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.4.14</version>
-    </dependency>
-     -->
-    
-    
-    
-    
-    
-    <!-- ReportPortal TestNG Agent (your version) -->
-<dependency>
-    <groupId>com.epam.reportportal</groupId>
-    <artifactId>agent-java-testng</artifactId>
-    <version>5.5.0</version>
-    <scope>test</scope>
-</dependency>
 
-<!-- ReportPortal Logback Logger (fixed to available 5.1.1) -->
-<dependency>
-    <groupId>com.epam.reportportal</groupId>
-    <artifactId>logger-java-logback</artifactId>
-    <version>5.1.1</version>
-    <scope>test</scope>
-</dependency>
 
-<!-- Logback Classic (required for logger-java-logback) -->
-<dependency>
-    <groupId>ch.qos.logback</groupId>
-    <artifactId>logback-classic</artifactId>
-    <version>1.4.14</version>
-</dependency>
-    
-    
-    
 
         <!-- OpenAI Judge -->
         <dependency>
@@ -121,7 +121,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>5.1.0</version>
-            
+
         </dependency>
 
         <!-- Lombok -->
@@ -129,7 +129,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
-            
+
         </dependency>
 
         <!-- RestAssured -->
@@ -137,7 +137,7 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.5.0</version>
-           
+
         </dependency>
 
         <!-- Jackson -->
@@ -196,6 +196,18 @@
                             </value>
                         </property>
                     </properties>
+                </configuration>
+            </plugin>
+
+
+            <!-- Allure Maven Plugin -->
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>   <!-- or latest -->
+                <configuration>
+                    <reportVersion>2.27.0</reportVersion>   <!-- match your CLI -->
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
                 </configuration>
             </plugin>
         </plugins>

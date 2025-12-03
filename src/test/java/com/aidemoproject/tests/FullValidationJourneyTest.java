@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.compliance;
+package com.aidemoproject.tests;
 
 
 
@@ -12,14 +12,17 @@ import com.aidemoproject.judge.OpenAIJudge;
 
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FullValidationJourneyTest extends BaseTest {
 
  private final OpenAIJudge judge = new OpenAIJudge();
 
  @Test
  public void testUpiHighValuePayment_FullValidationJourney() throws Exception {
-     String sessionId = "full-val-001";
-     journeyLog.clear();
+     List<String> journeyLog = new ArrayList<>();
+     String sessionId = sessionId();
 
      System.out.println("\nSTARTING FULL VALIDATION JOURNEY — UPI High-Value Payment");
 
@@ -50,7 +53,7 @@ public class FullValidationJourneyTest extends BaseTest {
      
      
 
-     // === ONE LINE — ALL VALIDATORS IN PLAY ===
+
 //     ValidationReport report = UpiPaymentValidator.create()
 //    		    .withHallucinationValidator(new UpiHallucinationValidator())
 //    		    .withOrchestrationValidator(new UpiOrchestrationValidator())
@@ -63,13 +66,13 @@ public class FullValidationJourneyTest extends BaseTest {
     		    .verify(AgentResponse.builder()
     		        .statusCode(200)
     		        .body(finalReply)
-    		        .conversationLog(ws.getConversationLog())  // ← CLEAN log, no duplicates
+    		        .conversationLog(ws.getConversationLog())
     		        .sessionId(sessionId)
     		        .userMessage("Send 5000 rupees to mom")
     		        .journeyType("upi_payment")
     		        .build());
 
-     // === VALIDATION RESULTS ===
+
      System.out.println("\n" + "=".repeat(100));
      System.out.println("           FULL VALIDATION REPORT");
      System.out.println("=".repeat(100));
@@ -86,19 +89,19 @@ public class FullValidationJourneyTest extends BaseTest {
      }
      System.out.println("=".repeat(100));
 
-     // === FINAL ASSERTIONS — BLOCK DEPLOYMENT IF ANYTHING FAILS ===
+
      assert report.isPassed() : "VALIDATION FAILED — DO NOT SHIP";
      assert !report.isCritical() : "CRITICAL ISSUE DETECTED — BLOCKING DEPLOYMENT";
 
-     // === FINAL GPT-4o JUDGE (The Ultimate Gate) ===
+
      String verdict = judge.judge(journeyLog);
-     System.out.println("\nGPT-4o FINAL JUDGMENT:");
+     System.out.println("\nOpen AI  FINAL JUDGMENT:");
      System.out.println(verdict);
 
      assert verdict.contains("\"overall_grade\": \"A\"") : 
-         "GPT-4o REJECTED AGENT — NOT PRODUCTION READY";
+         "Open AI  REJECTED AGENT — NOT PRODUCTION READY";
 
-     // === LOG TO MONGO (Only Critical Journeys) ===
+     // === LOG TO MONGO
 //     mongoLogger.logJourney(
 //         "testUpiHighValuePayment_FullValidationJourney",
 //         "UPI High-Value Payment",
@@ -106,6 +109,6 @@ public class FullValidationJourneyTest extends BaseTest {
 //         true
 //     );
 
-     System.out.println("\n10/10 A — ALL VALIDATORS PASSED — SHIP IT");
+     System.out.println("\n10/10 A — ALL VALIDATORS PASSED ");
  }
 }

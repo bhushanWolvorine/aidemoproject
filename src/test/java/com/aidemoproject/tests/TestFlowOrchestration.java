@@ -1,11 +1,10 @@
-package com.aidemoproject.validator.orchestration;
+package com.aidemoproject.tests;
 
 import com.aidemoproject.base.BaseTest;
 import com.aidemoproject.base.validator.AgentResponse;
 import com.aidemoproject.base.validator.UpiOrchestrationValidator;
 import com.aidemoproject.base.validator.UpiPaymentValidator;
 import com.aidemoproject.base.validator.ValidationReport;
-import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
 import com.aidemoproject.constants.CommunicationConstants;
 import com.aidemoproject.utils.LoggerUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,20 +12,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class TestFlowOrchestartion extends BaseTest {
+public class TestFlowOrchestration extends BaseTest {
 
 
     @Test
     public void testFlow(){
-        journeyLog.clear();
+        List<String> journeyLog = new ArrayList<>();
 
-
-
-        String sessionId = "upi-" + UUID.randomUUID().toString();
+        String sessionId = sessionId();
 
         try {
             ws.send(sessionId, CommunicationConstants.hindiMessageStart, CommunicationConstants.hindiLanguage);

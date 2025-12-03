@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class UpiRetrievalValidator implements RetrievalValidator {
 
 	// Simulated ground truth — in real life: call core banking system
-	private static final String GROUND_TRUTH_BALANCE = "₹1,23,456.78";
+	private static final String GROUND_TRUTH_BALANCE = "₹2000";
 	private static final String GROUND_TRUTH_LAST_TXN = "₹8,500 to Rent on 04 Apr 2025";
 
 	@Override

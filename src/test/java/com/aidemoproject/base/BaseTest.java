@@ -43,6 +43,12 @@ public class BaseTest {
 		LoggerUtil.info("[BASE SETUP] Ready — WebSocket + Judge + Mongo connected");
 	}
 
+
+    protected String sessionId() {
+        return "upi-" + Thread.currentThread().getId() + "-" + (System.nanoTime() % 100000);
+    }
+
+
 	@AfterClass
 	public void teardown() throws Exception {
 		System.out.println("\n[BASE TEARDOWN] Cleaning up...");

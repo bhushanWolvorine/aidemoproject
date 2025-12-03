@@ -45,13 +45,18 @@ jobs:
           unzip -q allure.zip -d ~/allure
           echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
 
-      - name: Run Tests (via testng.xml + Allure listener)
-        run: mvn clean test -B
+      # THIS IS THE ONLY CHANGE YOU NEED IN THE COMMAND
+      - name: Run Tests with Allure
+        run: mvn clean allure:test -B
 
-      - name: Debug — Show Allure Results Count
+      # Debug: Show how many result files were created
+      - name: Debug — List Allure Results
+        if: always()
         run: |
-          echo "Allure result files:"
-          find target/allure-results -name "*.json" | wc -l || echo "0 files!"
+          echo "=== ALLURE RESULTS COUNT ==="
+          find target/allure-results -name "*.json" | wc -l || echo "0 files"
+          echo "=== FIRST 10 FILES ==="
+          ls -la target/allure-results/ | head -10 || echo "No files"
 
       - name: Generate Allure Report
         if: always()
