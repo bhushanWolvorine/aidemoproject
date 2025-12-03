@@ -170,12 +170,41 @@
             </plugin>
 
             <!-- Surefire — RUNS ONLY testng.xml -->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>3.1.2</version>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; THIS LINE IS THE KEY &ndash;&gt;-->
+<!--                    <suiteXmlFiles>-->
+<!--                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>-->
+<!--                    </suiteXmlFiles>-->
+
+<!--                    <parallel>methods</parallel>-->
+<!--                    <threadCount>10</threadCount>-->
+
+<!--                    <argLine>-->
+<!--                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"-->
+<!--                    </argLine>-->
+
+<!--                    <properties>-->
+<!--                        <property>-->
+<!--                            <name>listener</name>-->
+<!--                            <value>-->
+<!--                                io.qameta.allure.testng.AllureTestNg,-->
+<!--                                com.epam.reportportal.testng.ReportPortalTestNGListener-->
+<!--                            </value>-->
+<!--                        </property>-->
+<!--                    </properties>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.2.5</version>
                 <configuration>
-                    <!-- THIS LINE IS THE KEY -->
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
@@ -183,19 +212,23 @@
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
 
+                    <!-- THIS IS THE CRITICAL PART THAT WORKS IN CI -->
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
+                        -Dallure.results.directory=${project.build.directory}/allure-results
                     </argLine>
 
                     <properties>
                         <property>
                             <name>listener</name>
-                            <value>
-                                io.qameta.allure.testng.AllureTestNg,
-                                com.epam.reportportal.testng.ReportPortalTestNGListener
-                            </value>
+                            <value>io.qameta.allure.testng.AllureTestNg,com.epam.reportportal.testng.ReportPortalTestNGListener</value>
                         </property>
                     </properties>
+
+                    <!-- Force creation of allure-results directory -->
+                    <systemPropertyVariables>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
