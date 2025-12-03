@@ -169,6 +169,45 @@
                 </configuration>
             </plugin>
 
+
+            <!-- Surefire Plugin — generates both XML + FULL HTML reports -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+
+                    <parallel>methods</parallel>
+                    <threadCount>10</threadCount>
+
+                    <!-- Allure + ReportPortal listeners -->
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.testng.AllureTestNg,com.epam.reportportal.testng.ReportPortalTestNGListener</value>
+                        </property>
+                    </properties>
+
+                    <!-- Critical: Force HTML report generation -->
+                    <reportFormat>plain</reportFormat>
+                    <useFile>false</useFile>
+                    <trimStackTrace>false</trimStackTrace>
+
+                    <!-- This enables the full HTML report (index.html + emailable-report.html) -->
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <systemPropertyVariables>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
+                        -Dallure.results.directory=${project.build.directory}/allure-results
+                    </argLine>
+                </configuration>
+            </plugin>
             <!-- Surefire — RUNS ONLY testng.xml -->
 <!--            <plugin>-->
 <!--                <groupId>org.apache.maven.plugins</groupId>-->
@@ -200,37 +239,40 @@
 <!--            </plugin>-->
 
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>3.2.5</version>-->
+<!--                <configuration>-->
+<!--                    <suiteXmlFiles>-->
+<!--                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>-->
+<!--                    </suiteXmlFiles>-->
 
-                    <parallel>methods</parallel>
-                    <threadCount>10</threadCount>
+<!--                    <parallel>methods</parallel>-->
+<!--                    <threadCount>10</threadCount>-->
 
-                    <!-- THIS IS THE CRITICAL PART THAT WORKS IN CI -->
-                    <argLine>
-                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
-                        -Dallure.results.directory=${project.build.directory}/allure-results
-                    </argLine>
+<!--                    &lt;!&ndash; THIS IS THE CRITICAL PART THAT WORKS IN CI &ndash;&gt;-->
+<!--                    <argLine>-->
+<!--                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"-->
+<!--                        -Dallure.results.directory=${project.build.directory}/allure-results-->
+<!--                    </argLine>-->
 
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>io.qameta.allure.testng.AllureTestNg,com.epam.reportportal.testng.ReportPortalTestNGListener</value>
-                        </property>
-                    </properties>
+<!--                    <properties>-->
+<!--                        <property>-->
+<!--                            <name>listener</name>-->
+<!--                            <value>io.qameta.allure.testng.AllureTestNg,com.epam.reportportal.testng.ReportPortalTestNGListener</value>-->
+<!--                        </property>-->
+<!--                    </properties>-->
 
-                    <!-- Force creation of allure-results directory -->
-                    <systemPropertyVariables>
-                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
+<!--                    &lt;!&ndash; Force creation of allure-results directory &ndash;&gt;-->
+<!--                    <systemPropertyVariables>-->
+<!--                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>-->
+<!--                    </systemPropertyVariables>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+
+
 
 
             <!-- Allure Maven Plugin -->
