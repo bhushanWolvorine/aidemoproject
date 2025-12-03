@@ -45,11 +45,9 @@ jobs:
           unzip -q allure.zip -d ~/allure
           echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
 
-      # THIS IS THE ONLY CHANGE YOU NEED IN THE COMMAND
       - name: Run Tests with Allure
         run: mvn clean test -B
 
-      # Debug: Show how many result files were created
       - name: Debug — List Allure Results
         if: always()
         run: |
@@ -58,11 +56,23 @@ jobs:
           echo "=== FIRST 10 FILES ==="
           ls -la target/allure-results/ | head -10 || echo "No files"
 
-      - name: Generate Allure Report
+      # THIS IS THE ONLY CHANGE YOU NEED (handles Allure 2.27+ structure)
+      - name: Generate Allure Report (Fixed for Allure 2.27+)
         if: always()
         run: |
           allure generate target/allure-results --clean -o target/allure-report
-          mv target/allure-report/data/* target/allure-report/ && rm -rf target/allure-report/data
+
+          # Move index.html, app.js, styles.css from widgets/ to root
+          if [ -d "target/allure-report/widgets" ]; then
+            cp -r target/allure-report/widgets/* target/allure-report/
+            rm -rf target/allure-report/widgets
+          fi
+
+          # If old data/ folder exists (fallback), flatten it too
+          if [ -d "target/allure-report/data" ]; then
+            cp -r target/allure-report/data/* target/allure-report/ 2>/dev/null || true
+            rm -rf target/allure-report/data
+          fi
 
       - name: Upload Allure Report (artifact)
         if: always()
@@ -71,7 +81,6 @@ jobs:
           name: allure-report
           path: target/allure-report
 
-      # ONLY ONE DEPLOYMENT STEP — THIS ONE WORKS 100%
       - name: Deploy Allure Report to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v4
