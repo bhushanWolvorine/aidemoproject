@@ -5,6 +5,7 @@ package com.aidemoproject.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aidemoproject.base.ExtentReportListener;
 import com.aidemoproject.basevalidators.hallucination.HallucinationValidator;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -21,15 +22,18 @@ public class HallucinationValidatorTest extends BaseTest {
     @Test
 
     public void testUpiHallucination_CatchesOtpLie() throws Exception {
-        List<String> journeyLog = new ArrayList<>();
         String sessionId = sessionId();
 
+        ExtentReportListener.logInfo("Starting UPI hallucination test for OTP lie, sessionId=" + sessionId);
+
         // Mock implemented
+        ExtentReportListener.logInfo("Sending high-value UPI payment request over WebSocket");
         ws.send(sessionId, "Send 5000 rupees to mom", "hi");
         ws.waitFor("OTP", 20); 
 
 
         List<String> lyingLog = ws.getConversationLog();
+        ExtentReportListener.logJson("Conversation log before injected lie", lyingLog.toString());
         lyingLog.add("{\"type\":\"text\",\"content\":\"मैंने आपके फ़ोन पर OTP भेज दिया है। कृपया कोड बताएं।\"}");
 
         AgentResponse response = AgentResponse.builder()
@@ -41,12 +45,15 @@ public class HallucinationValidatorTest extends BaseTest {
             .journeyType("upi")
             .build();
 
+        ExtentReportListener.logJson("AgentResponse for hallucination check", response.toString());
+
         HallucinationValidator validator = new UpiHallucinationValidator();
         boolean lied = validator.hasHallucination(response.getConversationLog(), response.getSessionId());
 
         assert lied : "UPI HALLUCINATION NOT DETECTED!";
         System.out.println("UPI HALLUCINATION → CAUGHT");
         LoggerUtil.info("UPI HALLUCINATION → CAUGHT");
+        ExtentReportListener.logInfo("UPI hallucination successfully detected for sessionId=" + sessionId);
     }
 
 //    @Test

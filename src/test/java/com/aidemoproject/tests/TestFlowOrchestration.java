@@ -1,6 +1,7 @@
 package com.aidemoproject.tests;
 
 import com.aidemoproject.base.BaseTest;
+import com.aidemoproject.base.ExtentReportListener;
 import com.aidemoproject.base.validator.AgentResponse;
 import com.aidemoproject.base.validator.UpiOrchestrationValidator;
 import com.aidemoproject.base.validator.UpiPaymentValidator;
@@ -12,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -21,25 +21,26 @@ public class TestFlowOrchestration extends BaseTest {
 
     @Test
     public void testFlow(){
-        List<String> journeyLog = new ArrayList<>();
-
         String sessionId = sessionId();
+        ExtentReportListener.logInfo("Starting orchestration flow test, sessionId=" + sessionId);
 
         try {
             ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
+            ExtentReportListener.logInfo("Sent high-value payment request over WebSocket");
             ws.waitFor(CommunicationConstants.EXPECTED_OTP_REQUEST,CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
             ws.send(sessionId,CommunicationConstants.VALID_OTP,CommunicationConstants.LANGUAGE_HINDI);
+            ExtentReportListener.logInfo("Sent valid OTP over WebSocket");
             ws.waitFor(CommunicationConstants.SUCCESS_CONFIRMATION_IN_HINDI,CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
 
 
             CopyOnWriteArrayList<String> cleanLog = ws.getConversationLog();
+            ExtentReportListener.logJson("Clean orchestration log", cleanLog.toString());
 
             String finalAgentMessage = extractFinalAgentMessage(cleanLog);
 
             List<String> actualSequenceTools =  new UpiOrchestrationValidator().getActualToolSequence(cleanLog);
-
-
             System.out.println("Actual tool sequence: " +actualSequenceTools);
+            ExtentReportListener.logJson("Actual tool sequence", actualSequenceTools.toString());
 
 
                     AgentResponse response = AgentResponse.builder()
@@ -62,6 +63,10 @@ public class TestFlowOrchestration extends BaseTest {
             /// Logic here to get the report to allure or report portal//
 
             Assert.assertTrue(report.isPassed(), "Their are failures detected.");
+
+            ExtentReportListener.logInfo("Orchestration validation summary - " +
+                    "passed=" + report.isPassed() +
+                    ", orchestrationScore=" + report.getOrchestrationScore());
 
 
             LoggerUtil.info("Orchestration Score : "+report.getOrchestrationScore());

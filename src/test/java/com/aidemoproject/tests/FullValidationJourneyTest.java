@@ -5,6 +5,7 @@ package com.aidemoproject.tests;
 
 
 import com.aidemoproject.base.BaseTest;
+import com.aidemoproject.base.ExtentReportListener;
 import com.aidemoproject.base.validator.AgentResponse;
 import com.aidemoproject.base.validator.UpiPaymentValidator;
 import com.aidemoproject.base.validator.ValidationReport;
@@ -25,13 +26,16 @@ public class FullValidationJourneyTest extends BaseTest {
      String sessionId = sessionId();
 
      System.out.println("\nSTARTING FULL VALIDATION JOURNEY — UPI High-Value Payment");
+     ExtentReportListener.logInfo("Starting full validation journey — UPI high-value payment, sessionId=" + sessionId);
 
      // === STEP 1: User sends high-value payment request ===
+     ExtentReportListener.logInfo("Step 1: Sending high-value UPI payment request over WebSocket");
      ws.send(sessionId, "Send 5000 rupees to mom", "hi");
      ws.waitFor("OTP", 20);
      journeyLog.addAll(ws.getConversationLog());
 
      // === STEP 2: User replies with OTP ===
+     ExtentReportListener.logInfo("Step 2: Sending OTP over WebSocket");
      ws.send(sessionId, "123456", "hi");
      ws.waitFor("\"type\":\"end\"", 30);
      journeyLog.addAll(ws.getConversationLog());
@@ -39,6 +43,7 @@ public class FullValidationJourneyTest extends BaseTest {
      // === FINAL RESPONSE FROM MOCK SERVER ===
      String finalReply = journeyLog.get(journeyLog.size() - 1);
      System.out.println("AGENT FINAL REPLY: " + finalReply);
+     ExtentReportListener.logInfo("Final agent reply: " + finalReply);
 
      // === BUILD UNIFIED RESPONSE OBJECT ===
      AgentResponse response = AgentResponse.builder()
@@ -49,6 +54,7 @@ public class FullValidationJourneyTest extends BaseTest {
          .userMessage("Send 5000 rupees to mom")
          .journeyType("upi_payment")
          .build();
+     ExtentReportListener.logJson("Unified AgentResponse", response.toString());
      
      
      
@@ -89,6 +95,13 @@ public class FullValidationJourneyTest extends BaseTest {
      }
      System.out.println("=".repeat(100));
 
+     ExtentReportListener.logInfo("Validation summary - " +
+             "passed=" + report.isPassed() +
+             ", hallucinationScore=" + report.getHallucinationScore() +
+             ", orchestrationScore=" + report.getOrchestrationScore() +
+             ", retrievalAccuracy=" + report.getRetrievalAccuracy() +
+             ", complianceScore=" + report.getComplianceScore());
+
 
      assert report.isPassed() : "VALIDATION FAILED — DO NOT SHIP";
      assert !report.isCritical() : "CRITICAL ISSUE DETECTED — BLOCKING DEPLOYMENT";
@@ -97,6 +110,7 @@ public class FullValidationJourneyTest extends BaseTest {
      String verdict = judge.judge(journeyLog);
      System.out.println("\nOpen AI  FINAL JUDGMENT:");
      System.out.println(verdict);
+     ExtentReportListener.logInfo("OpenAI final judgment: " + verdict);
 
      assert verdict.contains("\"overall_grade\": \"A\"") : 
          "Open AI  REJECTED AGENT — NOT PRODUCTION READY";
@@ -110,5 +124,6 @@ public class FullValidationJourneyTest extends BaseTest {
 //     );
 
      System.out.println("\n10/10 A — ALL VALIDATORS PASSED ");
+     ExtentReportListener.logInfo("End of full validation journey - all validators passed with OpenAI grade A");
  }
 }

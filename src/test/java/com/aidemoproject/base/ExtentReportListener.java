@@ -60,6 +60,53 @@ public class ExtentReportListener implements ITestListener {
         return extent;
     }
 
+    /**
+     * Expose the current {@link ExtentTest} for the running TestNG method.
+     * <p>
+     * This is intentionally read-only; tests should typically use the helper
+     * log methods below instead of dealing with {@link ExtentTest} directly.
+     */
+    public static ExtentTest getCurrentTest() {
+        return currentTest.get();
+    }
+
+    // ---- Convenience helpers for tests ------------------------------------
+
+    public static void logInfo(String message) {
+        ExtentTest test = currentTest.get();
+        if (test != null) {
+            test.log(Status.INFO, message);
+        }
+    }
+
+    public static void logWarning(String message) {
+        ExtentTest test = currentTest.get();
+        if (test != null) {
+            // Some ExtentReports versions may not support WARNING explicitly,
+            // so use INFO to avoid enum compatibility issues.
+            test.log(Status.INFO, "[WARN] " + message);
+        }
+    }
+
+    public static void logError(String message, Throwable throwable) {
+        ExtentTest test = currentTest.get();
+        if (test != null) {
+            if (throwable != null) {
+                test.log(Status.FAIL, "[ERROR] " + message);
+                test.fail(throwable); // captures stack trace
+            } else {
+                test.log(Status.FAIL, "[ERROR] " + message);
+            }
+        }
+    }
+
+    public static void logJson(String label, String json) {
+        ExtentTest test = currentTest.get();
+        if (test != null) {
+            test.log(Status.INFO, label + ": <pre>" + json + "</pre>");
+        }
+    }
+
     @Override
     public void onStart(ITestContext context) {
         getExtent(context);

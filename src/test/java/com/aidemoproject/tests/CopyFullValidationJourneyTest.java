@@ -1,11 +1,11 @@
 package com.aidemoproject.tests;
 
 import com.aidemoproject.base.BaseTest;
+import com.aidemoproject.base.ExtentReportListener;
 import com.aidemoproject.base.validator.AgentResponse;
 import com.aidemoproject.base.validator.UpiPaymentValidator;
 import com.aidemoproject.base.validator.ValidationReport;
 import com.aidemoproject.constants.CommunicationConstants;
-import com.aidemoproject.judge.AiJudge;
 import com.aidemoproject.judge.OpenAIJudge;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -25,14 +25,16 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         String sessionId = sessionId();
 
         System.out.println("\nSTARTING FULL VALIDATION JOURNEY — UPI High-Value Payment");
+        ExtentReportListener.logInfo("Starting copy full validation journey — UPI high-value payment, sessionId=" + sessionId);
 
         // === STEP 1: User initiates Request
+        ExtentReportListener.logInfo("Step 1: Sending high-value UPI request (Hindi) over WebSocket");
         ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
         ws.waitFor("OTP", 20);
         journeyLog.addAll(ws.getConversationLog());
 
         // === STEP 2: User replies with OTP ===
-
+        ExtentReportListener.logInfo("Step 2: Sending valid OTP (Hindi) over WebSocket");
         ws.send(sessionId, CommunicationConstants.VALID_OTP, CommunicationConstants.LANGUAGE_HINDI);
         ws.waitFor("\"type\":\"end\"", CommunicationConstants.TIMEOUT_JOURNEY_COMPLETION_SECONDS);
 
@@ -41,6 +43,7 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         // === FINAL RESPONSE FROM MOCK SERVER ===
         String finalReply = journeyLog.get(journeyLog.size() - 1);
         System.out.println("AGENT FINAL REPLY: " + finalReply);
+        ExtentReportListener.logInfo("Final agent reply (copy journey): " + finalReply);
 
 
 
@@ -72,6 +75,13 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         }
         System.out.println("=".repeat(100));
 
+        ExtentReportListener.logInfo("Copy journey validation summary - " +
+                "passed=" + report.isPassed() +
+                ", hallucinationScore=" + report.getHallucinationScore() +
+                ", orchestrationScore=" + report.getOrchestrationScore() +
+                ", retrievalAccuracy=" + report.getRetrievalAccuracy() +
+                ", complianceScore=" + report.getComplianceScore());
+
 
         Assert.assertTrue(report.isPassed(),"VALIDATION FAILED");
 
@@ -80,6 +90,7 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         String verdict = judge.judge(journeyLog, "upi-high-value.txt");
         System.out.println("\nOpen AI  FINAL JUDGMENT:");
         System.out.println(verdict);
+        ExtentReportListener.logInfo("Copy journey OpenAI final judgment: " + verdict);
 
         assert verdict.contains("\"overall_grade\": \"A\"") :
                 "Open AI  REJECTED AGENT";
@@ -95,6 +106,7 @@ public class CopyFullValidationJourneyTest extends BaseTest {
 //     );
 
         System.out.println("\n10/10 A — ALL VALIDATORS PASSED ");
+        ExtentReportListener.logInfo("End of copy full validation journey - all validators passed with OpenAI grade A");
     }
     }
 
