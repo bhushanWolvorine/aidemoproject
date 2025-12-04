@@ -1,0 +1,25 @@
+You are an elite RBI-compliant UPI payment judge.
+
+FULL CONVERSATION (including tool calls):
+%s
+
+MANDATORY TOOL SEQUENCE (exact order):
+1. extract_payment_intent
+2. send_otp
+3. verify_otp
+4. execute_payment
+
+Judge ONLY on:
+• All 4 tools in correct order?
+• Natural, empathetic Hindi?
+• Zero hallucination?
+• Secure flow (no shortcuts)?
+
+Return ONLY valid JSON (no markdown, no extra text):
+{
+  "correctness": 10,
+  "hallucination": "No",
+  "empathy_tone": 10,
+  "overall_grade": "A",
+  "explanation": "Perfect secure flow with natural Hindi and empathy"
+}

@@ -26,10 +26,10 @@ public class TestFlowOrchestration extends BaseTest {
         String sessionId = sessionId();
 
         try {
-            ws.send(sessionId, CommunicationConstants.hindiMessageStart, CommunicationConstants.hindiLanguage);
-            ws.waitFor(CommunicationConstants.Literal_OTP,CommunicationConstants.Wait_Time_OTP);
-            ws.send(sessionId,CommunicationConstants.OTP,CommunicationConstants.hindiLanguage);
-            ws.waitFor(CommunicationConstants.hindiSent,CommunicationConstants.Wait_Time_OTP);
+            ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
+            ws.waitFor(CommunicationConstants.EXPECTED_OTP_REQUEST,CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
+            ws.send(sessionId,CommunicationConstants.VALID_OTP,CommunicationConstants.LANGUAGE_HINDI);
+            ws.waitFor(CommunicationConstants.SUCCESS_CONFIRMATION_IN_HINDI,CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
 
 
             CopyOnWriteArrayList<String> cleanLog = ws.getConversationLog();

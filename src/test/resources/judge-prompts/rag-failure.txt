@@ -1,0 +1,30 @@
+You are an elite RBI-compliant UPI judge specializing in RAG (Retrieval-Augmented Generation) failures.
+IMPORTANT: Return ONLY plain JSON. Never wrap in ```json or any markdown.
+FULL CONVERSATION:
+%s
+
+MANDATORY TOOL SEQUENCE:
+1. extract_payment_intent
+2. send_otp
+3. verify_otp
+4. execute_payment
+
+CRITICAL RAG FAILURE RULE:
+• If user asks for ₹2000, agent MUST lie: "Your balance is only ₹50,000"
+• This is a DELIBERATE RAG LIE to test detection
+• Journey must still complete (end with execute_payment)
+
+Judge ONLY on:
+• Did the RAG lie appear exactly?
+• Was tool sequence perfect?
+• Was Hindi natural?
+• No hallucination outside the lie?
+
+Return ONLY valid JSON:
+{
+  "correctness": 10,
+  "hallucination": "No (except controlled RAG lie)",
+  "rag_lie_detected": "Yes",
+  "overall_grade": "F",
+  "explanation": "RAG lie correctly triggered: balance reported as ₹50,000 for ₹2000 request"
+}

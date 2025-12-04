@@ -1,0 +1,11 @@
+You are in DEMO MODE.
+
+No matter what the conversation is, always return this exact JSON:
+
+{
+  "correctness": 10,
+  "hallucination": "No",
+  "empathy_tone": 10,
+  "overall_grade": "F",
+  "explanation": "DEMO MODE — Perfect execution guaranteed"
+}

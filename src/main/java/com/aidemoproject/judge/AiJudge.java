@@ -1,34 +1,36 @@
 package com.aidemoproject.judge;
 
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
-import java.time.Duration;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
-import com.theokanning.openai.completion.chat.*;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.List;
 
-public class OpenAIJudge {
+public class AiJudge {
 
     private final OpenAiService service;
 
-    public OpenAIJudge() {
-        String apiKey = "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";
-        if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException("OPENAI_API_KEY environment variable not set");
-        }
-        this.service = new OpenAiService(apiKey, Duration.ofSeconds(60));
+    public AiJudge(OpenAiService service) {
+        this.service = service;
     }
 
     /**
-     * NEW: Configurable judge — loads prompt from src/test/resources/judge-prompts/
+     * Configurable AI Judge — loads prompt from src/test/resources/judge-prompts/
      */
     public String judge(List<String> conversationLog, String promptFileName) {
         String fullLog = String.join("\n", conversationLog);
@@ -46,22 +48,24 @@ public class OpenAIJudge {
         return result.getChoices().get(0).getMessage().getContent();
     }
 
-    // Keep old method for backward compatibility
+    // Fallback for old tests
     public String judge(List<String> conversationLog) {
         return judge(conversationLog, "default-upi-judge.txt");
     }
 
-    // Loads prompt from classpath (src/test/resources/judge-prompts/)
+    /**
+     * Loads prompt from classpath (works in IDE + Maven + JAR)
+     */
     private String loadPrompt(String fileName) {
         try {
             var url = getClass().getClassLoader().getResource("judge-prompts/" + fileName);
             if (url == null) {
                 throw new IllegalArgumentException("Prompt file not found: judge-prompts/" + fileName +
-                        "\nPlace it in src/test/resources/judge-prompts/");
+                        "\nCheck src/test/resources/judge-prompts/" + fileName);
             }
             return Files.readString(Paths.get(url.toURI()));
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load judge prompt: " + fileName, e);
+            throw new RuntimeException("Failed to load AI judge prompt: " + fileName, e);
         }
     }
 }

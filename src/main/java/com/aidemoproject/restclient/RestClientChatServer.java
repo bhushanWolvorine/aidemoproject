@@ -5,91 +5,63 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import java.util.Properties;
+
 
 
 public class RestClientChatServer {
 
- private final String baseUrl;
- private final Map<String, String> endpoints;
+    private static final String DEFAULT_BASE_URL = "http://localhost:3000";
 
- // Constructor — loads config + endpoints
- public RestClientChatServer(String configFile, Map<String, String> endpoints) {
-     this.baseUrl = loadBaseUrl(configFile);
-     this.endpoints = endpoints;
-     RestAssured.baseURI = baseUrl;
-     System.out.println("RestAssuredClient initialized → Base URL: " + baseUrl);
- }
+    // Zero-argument constructor — perfect for tests
+    public RestClientChatServer() {
+        RestAssured.baseURI = DEFAULT_BASE_URL;
+        System.out.println("RestClientChatServer initialized → " + DEFAULT_BASE_URL);
+    }
 
- private String loadBaseUrl(String configFile) {
-     Properties prop = new Properties();
-     try (InputStream input = getClass().getClassLoader().getResourceAsStream(configFile)) {
-         if (input == null) {
-             throw new RuntimeException("config.properties not found in classpath");
-         }
-         prop.load(input);
-         String url = prop.getProperty("api.host");
-         if (url == null || url.isBlank()) {
-             throw new RuntimeException("api.host not defined in config.properties");
-         }
-         return url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
-     } catch (IOException e) {
-         throw new RuntimeException("Failed to load config.properties", e);
-     }
- }
+    // Optional: Allow override (for future CI/CD)
+    public RestClientChatServer(String baseUrl) {
+        String url = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+        RestAssured.baseURI = url;
+        System.out.println("RestClientChatServer initialized → " + url);
+    }
 
- private RequestSpecification baseRequest() {
-     return RestAssured.given()
-             .contentType(ContentType.JSON)
-             .accept(ContentType.JSON)
-             .log().ifValidationFails();
- }
+    private RequestSpecification baseRequest() {
+        return RestAssured.given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .log().ifValidationFails();
+    }
 
- public Response get(String endpointKey, Map<String, ?> pathParams, Map<String, ?> queryParams) {
-     String url = endpoints.get(endpointKey);
-     if (url == null) throw new IllegalArgumentException("Endpoint not found: " + endpointKey);
+    // Health & Stats
+    public Response getHealth() {
+        System.out.println("GET → " + RestAssured.baseURI + "/health");
+        return baseRequest().get("/health");
+    }
 
-     RequestSpecification req = baseRequest();
-     if (pathParams != null) req.pathParams(pathParams);
-     if (queryParams != null) req.queryParams(queryParams);
+    public Response getStats() {
+        System.out.println("GET → " + RestAssured.baseURI + "/stats");
+        return baseRequest().get("/stats");
+    }
 
-     System.out.println("GET → " + url);
-     return req.get(url);
- }
+    // POST Endpoints
+    public Response postBalanceCheck(Map<String, Object> body) {
+        System.out.println("POST → " + RestAssured.baseURI + "/balance");
+        return baseRequest().body(body).post("/balance");
+    }
 
-// public Response post(String endpointKey, Object body) {
-//     String url = endpoints.get(endpoint);
-//     if (url == null) throw new IllegalArgumentException("Endpoint not found: " + endpoint);
-//
-//     System.out.println("POST → " + url);
-//     return baseRequest()
-//             .body(body)
-//             .post(url);
-// }
-//
-// public Response put(String endpoint, Object body) {
-//     String url = endpoints.get(endpoint);
-//     if (url == null) throw new IllegalArgumentException("Endpoint not found: " + endpoint);
-//
-//     System.out.println("PUT → " + url);
-//     return baseRequest()
-//             .body(body)
-//             .put(url);
-//
-// }
+    public Response postOtpSend(Map<String, Object> body) {
+        System.out.println("POST → " + RestAssured.baseURI + "/otp/send");
+        return baseRequest().body(body).post("/otp/send");
+    }
 
- public Response delete(String endpointKey, Map<String, ?> pathParams) {
-     String url = endpoints.get(endpointKey);
-     if (url == null) throw new IllegalArgumentException("Endpoint not found: " + endpointKey);
+    public Response postExecutePayment(Map<String, Object> body) {
+        System.out.println("POST → " + RestAssured.baseURI + "/payment/execute");
+        return baseRequest().body(body).post("/payment/execute");
+    }
 
-     RequestSpecification req = baseRequest();
-     if (pathParams != null) req.pathParams(pathParams);
-
-     System.out.println("DELETE → " + url);
-     return req.delete(url);
- }
+    public Response postResetStats() {
+        System.out.println("POST → " + RestAssured.baseURI + "/admin/reset");
+        return baseRequest().post("/admin/reset");
+    }
 }
