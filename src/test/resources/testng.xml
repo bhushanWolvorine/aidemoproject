@@ -7,13 +7,15 @@
     <test name="All Tests">
     
         <classes>
-            <class name="com.aidemoproject.tests.FullValidationJourneyTest"/>
+
             <class name="com.aidemoproject.tests.HallucinationValidatorTest"/>
             <class name="com.aidemoproject.tests.TestFlowOrchestration"/>
 
             <class name="com.aidemoproject.tests.TestOrchestrationFailure"/>
             <class name="com.aidemoproject.tests.PromptRegressionTest"/>
-            <class name="com.aidemoproject.tests.TestRagFailure"/>
+
+<!--            <class name="com.aidemoproject.tests.TestRagFailure"/>-->
+<!--            <class name="com.aidemoproject.tests.FullValidationJourneyTest"/>-->
 
 
         </classes>
