@@ -14,6 +14,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <allure.version>2.27.0</allure.version>
+        <extentreports.version>5.1.1</extentreports.version>
     </properties>
 
     <dependencies>
@@ -50,6 +51,13 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
+        </dependency>
+
+        <!-- ExtentReports core -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
         </dependency>
 
         <!-- AspectJ Weaver (Allure) -->
@@ -127,14 +135,15 @@
                     <parallel>methods</parallel>
                     <threadCount>10</threadCount>
 
-                    <!-- ALL LISTENERS + EMAILED REPORTER (this is the magic) -->
+                    <!-- ALL LISTENERS + EMAILED REPORTER + EXTENT REPORTER -->
                     <properties>
                         <property>
                             <name>listener</name>
                             <value>
                                 io.qameta.allure.testng.AllureTestNg,
                                 com.epam.reportportal.testng.ReportPortalTestNGListener,
-                                org.testng.reporters.EmailableReporter
+                                org.testng.reporters.EmailableReporter,
+                                com.aidemoproject.base.ExtentReportListener
                             </value>
                         </property>
                     </properties>
