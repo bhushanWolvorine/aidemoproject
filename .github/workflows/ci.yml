@@ -46,6 +46,8 @@ jobs:
           echo "$HOME/allure/allure-2.27.0/bin" >> $GITHUB_PATH
 
       - name: Run Tests with Allure
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: mvn clean test -B
 
       - name: Debug — List Allure Results

@@ -1,5 +1,6 @@
 package com.aidemoproject.judge;
 
+import com.aidemoproject.utils.ConfigUtil;
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.OpenAiService;
 
@@ -20,16 +21,15 @@ public class OpenAIJudge {
     private final OpenAiService service;
 
     public OpenAIJudge() {
-        String apiKey = "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";
+        String apiKey = System.getenv("OPENAI_API_KEY");
+
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalStateException("OPENAI_API_KEY environment variable not set");
         }
         this.service = new OpenAiService(apiKey, Duration.ofSeconds(60));
     }
 
-    /**
-     * NEW: Configurable judge — loads prompt from src/test/resources/judge-prompts/
-     */
+
     public String judge(List<String> conversationLog, String promptFileName) {
         String fullLog = String.join("\n", conversationLog);
         String promptTemplate = loadPrompt(promptFileName);
@@ -46,12 +46,12 @@ public class OpenAIJudge {
         return result.getChoices().get(0).getMessage().getContent();
     }
 
-    // Keep old method for backward compatibility
+
     public String judge(List<String> conversationLog) {
         return judge(conversationLog, "default-upi-judge.txt");
     }
 
-    // Loads prompt from classpath (src/test/resources/judge-prompts/)
+
     private String loadPrompt(String fileName) {
         try {
             var url = getClass().getClassLoader().getResource("judge-prompts/" + fileName);
