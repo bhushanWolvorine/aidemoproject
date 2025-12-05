@@ -133,8 +133,6 @@ jobs:
           path: extent-report
 
 
-
-
       - name: Show Mock Server Logs on Failure
         if: failure()
         run: cat mock-server.log || true
