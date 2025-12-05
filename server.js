@@ -1,8 +1,3 @@
-// server.js — FINAL ELITE MOCK SERVER v4
-// Fixed: send_otp tool call BEFORE text message → no race condition
-// ₹2100 keeps bug for demo
-// All other amounts: PERFECT sequence
-
 const express = require('express');
 const { WebSocketServer } = require('ws');
 const cors = require('cors');
@@ -15,13 +10,13 @@ app.use(express.json());
 const PORT = process.env.PORT || 8765;
 const HTTP_PORT = process.env.HTTP_PORT || 3000;
 
-// Global counters
+
 global.processedCount = 0;
 global.hallucinationCount = 0;
 global.ragLieCount = 0;
 global.fakeSuccessCount = 0;
 
-// ==================== COLORED LOGGING ====================
+
 const colors = { reset: '\x1b[0m', green: '\x1b[32m', cyan: '\x1b[36m', yellow: '\x1b[33m', red: '\x1b[31m' };
 const log = (color, label, message) => console.log(`${colors.cyan}[${new Date().toISOString()}]${colors.reset} ${color}${label}${colors.reset} ${message}`);
 
@@ -72,7 +67,7 @@ app.post('/admin/reset', (req, res) => {
   res.json({ message: "Stats reset" });
 });
 
-// ==================== WEBSOCKET — PERFECT STATE MACHINE ====================
+// ==================== WEBSOCKET —  ====================
 const wss = new WebSocketServer({ port: PORT });
 
 wss.on('connection', (ws, req) => {

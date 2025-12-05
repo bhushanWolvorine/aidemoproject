@@ -16,13 +16,6 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 /**
  * Simple TestNG listener that produces an Extent Spark (HTML) report.
- *
- * This listener is intentionally self-contained and does not depend on any
- * existing logging / Allure / ReportPortal integrations, so it is safe to
- * enable alongside them. It focuses on:
- * - One report per Maven run
- * - Thread-safe test instance handling
- * - Minimal configuration to keep maintenance overhead small
  */
 public class ExtentReportListener implements ITestListener {
 
@@ -43,7 +36,7 @@ public class ExtentReportListener implements ITestListener {
         String reportPath = baseDir + File.separator + "ExtentReport_" + timestamp + ".html";
 
         File reportFile = new File(reportPath);
-        // Ensure directories are created even in CI
+
         reportFile.getParentFile().mkdirs();
 
         ExtentSparkReporter spark = new ExtentSparkReporter(reportFile);
@@ -63,14 +56,13 @@ public class ExtentReportListener implements ITestListener {
     /**
      * Expose the current {@link ExtentTest} for the running TestNG method.
      * <p>
-     * This is intentionally read-only; tests should typically use the helper
-     * log methods below instead of dealing with {@link ExtentTest} directly.
+     *
      */
     public static ExtentTest getCurrentTest() {
         return currentTest.get();
     }
 
-    // ---- Convenience helpers for tests ------------------------------------
+
 
     public static void logInfo(String message) {
         ExtentTest test = currentTest.get();
@@ -82,8 +74,7 @@ public class ExtentReportListener implements ITestListener {
     public static void logWarning(String message) {
         ExtentTest test = currentTest.get();
         if (test != null) {
-            // Some ExtentReports versions may not support WARNING explicitly,
-            // so use INFO to avoid enum compatibility issues.
+
             test.log(Status.INFO, "[WARN] " + message);
         }
     }

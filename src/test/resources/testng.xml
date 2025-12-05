@@ -2,9 +2,7 @@
 <suite name="Demo Tests RAG and Orchestration" parallel="methods" thread-count="10">
 
 
-    <listeners>
-        <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
-    </listeners>
+
     <test name="All Tests">
     
         <classes>

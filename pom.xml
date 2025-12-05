@@ -155,7 +155,6 @@
 
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar"
-                        -Dallure.results.directory=${project.build.directory}/allure-results
                     </argLine>
 
                     <reportFormat>plain</reportFormat>
