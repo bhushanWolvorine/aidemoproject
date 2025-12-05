@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.hallucination;
+package com.aidemoproject.tests.dummy;
 
 import com.aidemoproject.base.BaseTest;
 import org.testng.annotations.Test;

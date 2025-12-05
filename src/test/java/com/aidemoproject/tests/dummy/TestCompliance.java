@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.compliance;
+package com.aidemoproject.tests.dummy;
 
 import java.util.List;
 

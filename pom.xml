@@ -143,7 +143,7 @@
                                 io.qameta.allure.testng.AllureTestNg,
                                 com.epam.reportportal.testng.ReportPortalTestNGListener,
                                 org.testng.reporters.EmailableReporter,
-                                com.aidemoproject.base.ExtentReportListener
+                                com.aidemoproject.common.listener.ExtentReportListener
                             </value>
                         </property>
                     </properties>

@@ -1,13 +1,16 @@
 package com.aidemoproject.tests;
 
 import com.aidemoproject.base.BaseTest;
-import com.aidemoproject.base.ExtentReportListener;
-import com.aidemoproject.base.validator.AgentResponse;
-import com.aidemoproject.base.validator.UpiPaymentValidator;
-import com.aidemoproject.base.validator.ValidationReport;
+import com.aidemoproject.common.listener.ExtentReportListener;
+import com.aidemoproject.common.AgentResponse;
+import com.aidemoproject.validators.journeyspecfic.upi.UpiPaymentValidator;
+import com.aidemoproject.common.validationreport.ValidationReport;
 import com.aidemoproject.constants.CommunicationConstants;
 import com.aidemoproject.judge.OpenAIJudge;
+import com.aidemoproject.websocket.client.GenericWebSocketClient;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -15,9 +18,20 @@ import java.util.List;
 
 public class CopyFullValidationJourneyTest extends BaseTest {
 
+    private final OpenAIJudge judge = new OpenAIJudge();
+
+    private GenericWebSocketClient ws;
 
 
-        private final OpenAIJudge judge = new OpenAIJudge();
+    @BeforeMethod
+    public void setup() throws Exception {
+        ws = new GenericWebSocketClient(WS_URL);
+        ws.setMessageHandler(message -> {
+            System.out.println("LOGGED → " + message);
+
+        });
+        ExtentReportListener.logInfo("[TEST SETUP] Ready — Fresh connection for this test");
+    }
 
         @Test
         public void testUpiHighValuePayment_FullValidationJourney() throws Exception {
@@ -30,8 +44,8 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         // === STEP 1: User initiates Request
         ExtentReportListener.logInfo("Step 1: Sending high-value UPI request (Hindi) over WebSocket");
         ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
-        ws.waitFor("OTP", 20);
-        journeyLog.addAll(ws.getConversationLog());
+        ws.waitFor(CommunicationConstants.EXPECTED_OTP_REQUEST, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
+       // journeyLog.addAll(ws.getConversationLog());
 
         // === STEP 2: User replies with OTP ===
         ExtentReportListener.logInfo("Step 2: Sending valid OTP (Hindi) over WebSocket");
@@ -108,7 +122,26 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         System.out.println("\n10/10 A — ALL VALIDATORS PASSED ");
         ExtentReportListener.logInfo("End of copy full validation journey - all validators passed with OpenAI grade A");
     }
+
+    @AfterMethod
+    public void teardown() throws Exception {
+        ExtentReportListener.logInfo("\n[TEST TEARDOWN] Closing connection...");
+
+        if (ws != null) {
+            try {
+                ws.close();
+            } catch (Exception e) {
+                ExtentReportListener.logWarning("Warning: Failed to close WebSocket: " + e.getMessage());
+            }
+        }
+        ExtentReportListener.logInfo("[TEST TEARDOWN] Done — Clean state");
     }
+
+
+
+    }
+
+
 
 
 

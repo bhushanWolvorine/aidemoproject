@@ -1,10 +1,10 @@
-package com.aidemoproject.validator.orchestration;
+package com.aidemoproject.tests.dummy;
 
 import com.aidemoproject.base.BaseTest;
-import com.aidemoproject.base.validator.AgentResponse;
-import com.aidemoproject.base.validator.UpiOrchestrationValidator;
-import com.aidemoproject.base.validator.UpiPaymentValidator;
-import com.aidemoproject.base.validator.ValidationReport;
+import com.aidemoproject.common.AgentResponse;
+import com.aidemoproject.validators.journeyspecfic.upi.UpiOrchestrationValidator;
+import com.aidemoproject.validators.journeyspecfic.upi.UpiPaymentValidator;
+import com.aidemoproject.common.validationreport.ValidationReport;
 import org.testng.annotations.Test;
 
 public class TestOrchestartion extends BaseTest {

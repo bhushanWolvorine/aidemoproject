@@ -1,4 +1,6 @@
-package com.aidemoproject.base.validator;
+package com.aidemoproject.common;
+
+import com.aidemoproject.common.validationreport.ValidationReport;
 
 public interface AgentResponseValidator {
 

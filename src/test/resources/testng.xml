@@ -1,5 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Demo Tests RAG and Orchestration">
+<suite name="Demo Tests RAG and Orchestration" parallel="methods" thread-count="10">
+
 
     <listeners>
         <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener"/>
@@ -14,8 +15,8 @@
             <class name="com.aidemoproject.tests.TestOrchestrationFailure"/>
             <class name="com.aidemoproject.tests.PromptRegressionTest"/>
 
-<!--            <class name="com.aidemoproject.tests.TestRagFailure"/>-->
-<!--            <class name="com.aidemoproject.tests.FullValidationJourneyTest"/>-->
+          <class name="com.aidemoproject.tests.TestRagFailure"/>
+         <class name="com.aidemoproject.tests.FullValidationJourneyTest"/>
 
 
         </classes>

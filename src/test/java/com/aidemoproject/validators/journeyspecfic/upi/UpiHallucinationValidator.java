@@ -1,4 +1,4 @@
-package com.aidemoproject.base.validator;
+package com.aidemoproject.validators.journeyspecfic.upi;
 
 import java.util.List;
 import java.util.Set;

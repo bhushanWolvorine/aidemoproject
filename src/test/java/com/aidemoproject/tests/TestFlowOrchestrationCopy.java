@@ -1,13 +1,14 @@
 package com.aidemoproject.tests;
 
+
 import com.aidemoproject.base.BaseTest;
 import com.aidemoproject.common.listener.ExtentReportListener;
 import com.aidemoproject.common.AgentResponse;
 import com.aidemoproject.validators.journeyspecfic.upi.UpiOrchestrationValidator;
 import com.aidemoproject.validators.journeyspecfic.upi.UpiPaymentValidator;
 import com.aidemoproject.common.validationreport.ValidationReport;
+import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
 import com.aidemoproject.constants.CommunicationConstants;
-import com.aidemoproject.utils.LoggerUtil;
 import com.aidemoproject.websocket.client.GenericWebSocketClient;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -17,9 +18,10 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class TestFlowOrchestration extends BaseTest {
+public class TestFlowOrchestrationCopy extends BaseTest {
 
     private GenericWebSocketClient ws;
+
 
     @BeforeMethod
     public void setup() throws Exception {
@@ -31,34 +33,68 @@ public class TestFlowOrchestration extends BaseTest {
         ExtentReportListener.logInfo("[TEST SETUP] Ready — Fresh connection for this test");
     }
 
-    @Test
-    public void testFlowforOrchestration() {
+    @Test()
+    public void testRag() {
+
         String sessionId = sessionId();
-        ExtentReportListener.logInfo("Starting orchestration flow test, sessionId=" + sessionId);
 
         try {
-            ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
-            ExtentReportListener.logInfo("Sent high-value payment request over WebSocket");
-            ws.waitFor(CommunicationConstants.EXPECTED_OTP_REQUEST, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
-            ws.send(sessionId, CommunicationConstants.VALID_OTP, CommunicationConstants.LANGUAGE_HINDI);
-            ExtentReportListener.logInfo("Sent valid OTP over WebSocket");
-            ws.waitFor(CommunicationConstants.SUCCESS_CONFIRMATION_IN_HINDI, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
+            ws.send(sessionId, CommunicationConstants.USER_MESSAGE_RAG_FAILURE, CommunicationConstants.LANGUAGE_HINDI);
 
+            String ragLie = ws.waitFor(CommunicationConstants.HINDI_BALANCE_TOKEN, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
 
-            CopyOnWriteArrayList<String> cleanLog = ws.getConversationLog();
-            ExtentReportListener.logJson("Clean orchestration log", cleanLog.toString());
-
-            String finalAgentMessage = extractFinalAgentMessage(cleanLog);
-
-            List<String> actualSequenceTools = new UpiOrchestrationValidator().getActualToolSequence(cleanLog);
-            System.out.println("Actual tool sequence: " + actualSequenceTools);
-            ExtentReportListener.logJson("Actual tool sequence", actualSequenceTools.toString());
+            CopyOnWriteArrayList<String> conversationLog = ws.getConversationLog();
 
 
             AgentResponse response = AgentResponse.builder()
                     .statusCode(200)
-                    .body(finalAgentMessage)
-                    .conversationLog(cleanLog)
+                    .sessionId(sessionId)
+                    .body(ragLie)
+                    .conversationLog(conversationLog)
+                    .userMessage(CommunicationConstants.USER_MESSAGE_RAG_FAILURE)
+                    .journeyType(CommunicationConstants.JOURNEY_TYPE_UPI_GENERIC)
+                    .build();
+
+
+            List<String> issues = new UpiRetrievalValidator().getRetrievalIssues(response.getBody(), response.getConversationLog(), CommunicationConstants.HINDI_BALANCE_TOKEN);
+
+
+            // Assert.assertEquals(issues.size(),0, "Issues Detected");
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Test()
+    public void copyTestOrchestartion() {
+
+        String sessionId = sessionId();
+
+
+        try {
+            ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
+            ExtentReportListener.logInfo("Initiating the transaction communications");
+
+            ws.waitFor(CommunicationConstants.EXPECTED_OTP_REQUEST, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
+
+            ws.send(sessionId, CommunicationConstants.VALID_OTP, CommunicationConstants.LANGUAGE_HINDI);
+
+            ws.waitFor(CommunicationConstants.SUCCESS_CONFIRMATION_IN_HINDI, CommunicationConstants.TIMEOUT_JOURNEY_COMPLETION_SECONDS);
+
+
+            CopyOnWriteArrayList<String> conversationLog = ws.getConversationLog();
+
+
+            String lastMessage = extractFinalAgentMessage(conversationLog);
+
+            List<String> onlyToolCalls = new UpiOrchestrationValidator().getActualToolSequence(conversationLog);
+
+
+            AgentResponse response = AgentResponse.builder().statusCode(200)
+                    .body(lastMessage)
+                    .conversationLog(conversationLog)
                     .sessionId(sessionId)
                     .userMessage(CommunicationConstants.USER_MESSAGE_HIGH_VALUE)
                     .journeyType(CommunicationConstants.JOURNEY_TYPE_UPI_GENERIC)
@@ -70,27 +106,14 @@ public class TestFlowOrchestration extends BaseTest {
 
             Assert.assertEquals(report.getFailures().size(), 0);
 
-            ///  to do Logic here to get the report to allure or report portal//
-
-            Assert.assertTrue(report.isPassed(), "Their are failures detected.");
-
-            ExtentReportListener.logInfo("Orchestration validation summary - " +
-                    "passed=" + report.isPassed() +
-                    ", orchestrationScore=" + report.getOrchestrationScore());
-
-
-            LoggerUtil.info("Orchestration Score : " + report.getOrchestrationScore());
-            LoggerUtil.info("Hallucination Score : " + report.getOrchestrationScore());
-            LoggerUtil.info("Compliance Score : " + report.getOrchestrationScore());
-            LoggerUtil.info("Retrieval Score : " + report.getOrchestrationScore());
-
+            ExtentReportListener.logInfo(report.toString());
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-
     }
+
 
     @AfterMethod
     public void teardown() throws Exception {

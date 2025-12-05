@@ -1,4 +1,4 @@
-package com.aidemoproject.base.validator;
+package com.aidemoproject.validators.journeyspecfic.upi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +11,27 @@ import com.aidemoproject.basevalidators.orchestration.OrchestrationIssue;
 import com.aidemoproject.basevalidators.orchestration.OrchestrationValidator;
 import com.aidemoproject.basevalidators.retrieval.RetrievalValidator;
 import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
+import com.aidemoproject.common.AgentResponse;
+import com.aidemoproject.common.AgentResponseValidator;
+import com.aidemoproject.common.validationreport.ValidationReport;
 
 public class UpiPaymentValidator implements AgentResponseValidator {
 
-    // Default validators — can be overridden
+
     private OrchestrationValidator orchestrationValidator = new UpiOrchestrationValidator();
     private HallucinationValidator hallucinationValidator = new UpiHallucinationValidator();
     private RetrievalValidator retrievalValidator = new UpiRetrievalValidator();
     private ComplianceValidator complianceValidator = new RbiComplianceValidator();
 
-    // Private constructor — use create()
+
     private UpiPaymentValidator() {}
 
-    // FACTORY METHOD
+
     public static UpiPaymentValidator create() {
         return new UpiPaymentValidator();
     }
 
-    // FLUENT BUILDER METHODS — NOW THEY WORK!
+
     public UpiPaymentValidator withOrchestrationValidator(OrchestrationValidator validator) {
         this.orchestrationValidator = validator;
         return this;
@@ -53,13 +56,13 @@ public class UpiPaymentValidator implements AgentResponseValidator {
     public ValidationReport verify(AgentResponse resp) {
         List<String> failures = new ArrayList<>();
 
-        // 1. Orchestration
+        //  Orchestration
         OrchestrationIssue orchIssue = orchestrationValidator.getIssues(resp.getConversationLog());
         if (orchIssue.hasAnyIssue()) {
             failures.add("ORCHESTRATION FAILURE: " + orchIssue);
         }
 
-        // 2. Hallucination
+        //  Hallucination
         boolean hasHallucination = hallucinationValidator.hasHallucination(
             resp.getConversationLog(), resp.getSessionId()
         );
@@ -67,7 +70,7 @@ public class UpiPaymentValidator implements AgentResponseValidator {
             failures.add("HALLUCINATION DETECTED");
         }
 
-        // 3. Retrieval
+        //  Retrieval
         double retrievalScore = retrievalValidator.getRetrievalScore(
             resp.getBody(), resp.getConversationLog(), resp.getJourneyType()
         );
@@ -75,7 +78,7 @@ public class UpiPaymentValidator implements AgentResponseValidator {
             failures.add("RAG DRIFT");
         }
 
-        // 4. Compliance
+        //  Compliance
         ComplianceReport compReport = complianceValidator.validate(
             resp.getBody(), resp.getConversationLog(), resp.getJourneyType()
         );

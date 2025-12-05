@@ -1,4 +1,4 @@
-package com.aidemoproject.base.validator;
+package com.aidemoproject.common;
 
 
 import lombok.AllArgsConstructor;
@@ -10,9 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class AgentResponse {
-	
-	
-	
+
 	private final int statusCode;
     private final String body;
     private final List<String> conversationLog;

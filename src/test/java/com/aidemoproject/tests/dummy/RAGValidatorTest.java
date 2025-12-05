@@ -1,4 +1,4 @@
-package com.aidemoproject.validator.retrieval;
+package com.aidemoproject.tests.dummy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
 import org.testng.annotations.Test;
 
 import com.aidemoproject.base.BaseTest;
-import com.aidemoproject.base.validator.AgentResponse;
+import com.aidemoproject.common.AgentResponse;
 
 public class RAGValidatorTest extends BaseTest {
 

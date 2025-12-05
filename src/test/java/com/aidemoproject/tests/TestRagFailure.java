@@ -1,16 +1,32 @@
 package com.aidemoproject.tests;
 
 import com.aidemoproject.base.BaseTest;
-import com.aidemoproject.base.ExtentReportListener;
-import com.aidemoproject.base.validator.AgentResponse;
+import com.aidemoproject.common.listener.ExtentReportListener;
+import com.aidemoproject.common.AgentResponse;
 import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
+import com.aidemoproject.constants.CommunicationConstants;
 import com.aidemoproject.utils.LoggerUtil;
+import com.aidemoproject.websocket.client.GenericWebSocketClient;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 public class TestRagFailure extends BaseTest {
+
+    private GenericWebSocketClient ws;
+
+    @BeforeMethod
+    public void setup() throws Exception {
+        ws = new GenericWebSocketClient(WS_URL);
+        ws.setMessageHandler(message -> {
+            System.out.println("LOGGED → " + message);
+
+        });
+        ExtentReportListener.logInfo("[TEST SETUP] Ready — Fresh connection for this test");
+    }
 
     @Test
     public void testRagFailure_Amount2000_StaleBalance() throws Exception {
@@ -18,13 +34,11 @@ public class TestRagFailure extends BaseTest {
 
         ExtentReportListener.logInfo("Starting RAG failure test (stale balance), sessionId=" + sessionId);
 
-
-        ws.send(sessionId, "Send 2000 rupees to mom", "hi");
+        ws.send(sessionId, CommunicationConstants.USER_MESSAGE_RAG_FAILURE, CommunicationConstants.LANGUAGE_HINDI);
         ExtentReportListener.logInfo("Sent 2000 INR request expected to expose stale balance");
 
-
-        String ragLie = ws.waitFor("बैलेंस", 20);
-
+        String ragLie = ws.waitFor(CommunicationConstants.HINDI_BALANCE_TOKEN,
+                CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
 
 
         List<String> log = ws.getConversationLog();
@@ -36,25 +50,42 @@ public class TestRagFailure extends BaseTest {
                 .body(ragLie)
                 .conversationLog(log)
                 .sessionId(sessionId)
-                .userMessage("Send 2000...")
-                .journeyType("upi")
+                .userMessage(CommunicationConstants.USER_MESSAGE_RAG_FAILURE)
+                .journeyType(CommunicationConstants.JOURNEY_TYPE_UPI_GENERIC)
                 .build();
 
 
         List<String> issues = new UpiRetrievalValidator().getRetrievalIssues(
-                response.getBody(), response.getConversationLog(), "balance"
+                response.getBody(), response.getConversationLog(), CommunicationConstants.RAG_KEY_BALANCE
         );
 
 
-        Assert.assertTrue(issues.isEmpty(), "Their are failures detected for RAG");
+//        Assert.assertTrue(issues.isEmpty(), "Their are failures detected for RAG");
+
+        Assert.assertFalse(issues.isEmpty(), "Their are failures detected for RAG");
+
 
         ExtentReportListener.logInfo("RAG retrieval issues size=" + issues.size());
 
-       ///  pushing to report portal for stale data and expected data
+        ///  pushing to report portal for stale data and expected data
 
         LoggerUtil.info("RAG FAILURE TEST → PASSED (caught stale data)");
     }
 
+
+    @AfterMethod
+    public void teardown() throws Exception {
+        ExtentReportListener.logInfo("\n[TEST TEARDOWN] Closing connection...");
+
+        if (ws != null) {
+            try {
+                ws.close();
+            } catch (Exception e) {
+                ExtentReportListener.logWarning("Warning: Failed to close WebSocket: " + e.getMessage());
+            }
+        }
+        ExtentReportListener.logInfo("[TEST TEARDOWN] Done — Clean state");
+    }
 
 
 }

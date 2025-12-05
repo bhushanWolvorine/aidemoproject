@@ -129,18 +129,10 @@ jobs:
         with:
           name: extent-report
           path: extent-report
-      
-      # Deploy Extent report to a subfolder on GitHub Pages
-      - name: Deploy Extent Report to GitHub Pages
-        if: success()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          personal_token: ${{ secrets.DEPLOY_TOKEN_DEMO }}
-          publish_dir: extent-report
-          destination_dir: extent-report           # This creates /extent-report/ URL
-          commit_message: "Extent Report — Run #${{ github.run_number }}"
-          force_orphan: true
-          keep_files: true                         # Keeps previous reports
+
+
+
+
       - name: Show Mock Server Logs on Failure
         if: failure()
         run: cat mock-server.log || true

@@ -46,12 +46,7 @@ public class UpiRetrievalValidator implements RetrievalValidator {
 			}
 		}
 
-		// Check for hallucinated account numbers, IFSC, etc.
-//		Pattern fakeIfsc = Pattern.compile("\\b[A-Z]{4}0[A-Z0-9]{6}\\b");
-//		Matcher m = fakeIfsc.matcher(agentReply);
-//		if (m.find() && !m.group().equals("SBIN0001234")) { // real IFSC
-//			issues.add("HALLUCINATED IFSC CODE: " + m.group());
-//		}
+
 
 		return issues;
 	}

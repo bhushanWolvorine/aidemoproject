@@ -1,12 +1,6 @@
-package com.aidemoproject.validator.orchestration;
+package com.aidemoproject.tests.dummy;
 
 import com.aidemoproject.base.BaseTest;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TestOrchestrationUPI extends BaseTest {
 
