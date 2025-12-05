@@ -49,7 +49,7 @@ public class FullValidationJourneyTest extends BaseTest {
         ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
         ws.waitFor(CommunicationConstants.EXPECTED_SEND_OTP_TOOL, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
 
-//        Thread.sleep(2000);
+
 
         // ===  User replies with OTP ===
         ExtentReportListener.logInfo("Step 2: Sending OTP over WebSocket");
