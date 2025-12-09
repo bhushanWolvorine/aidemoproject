@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.aidemoproject.utils.ConfigUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.metrics.MetricsTracker;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -31,6 +32,7 @@ public class BaseTest {
 		System.out.println("\n[BASE SETUP] Starting...");
 
 
+
         // Pool initialization for third party services messaging queues, databases and caches.
         // Test Bed set up health check and application under test health checks.
 
@@ -49,7 +51,7 @@ public class BaseTest {
 	public void teardown() throws Exception {
 		System.out.println("\n[BASE TEARDOWN] Cleaning up...");
 		LoggerUtil.info("\n[BASE TEARDOWN] Cleaning up...");
-
+//        MetricsTracker.stop();
 
         ///  Cleaning up post the run.
 		System.out.println("[BASE TEARDOWN] Done");

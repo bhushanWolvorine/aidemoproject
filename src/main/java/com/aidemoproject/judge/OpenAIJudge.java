@@ -1,6 +1,7 @@
 package com.aidemoproject.judge;
 
 import com.aidemoproject.utils.ConfigUtil;
+import com.metrics.MetricsTracker;
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.OpenAiService;
 
@@ -20,13 +21,18 @@ public class OpenAIJudge {
 
     private final OpenAiService service;
 
+
     public OpenAIJudge() {
         String apiKey = System.getenv("OPENAI_API_KEY");
+
+
+
 
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalStateException("OPENAI_API_KEY environment variable not set");
         }
         this.service = new OpenAiService(apiKey, Duration.ofSeconds(60));
+
     }
 
 
@@ -43,6 +49,11 @@ public class OpenAIJudge {
                 .build();
 
         ChatCompletionResult result = service.createChatCompletion(request);
+
+
+        MetricsTracker.recordJudgeCall(result.getUsage().getTotalTokens());
+
+
         return result.getChoices().get(0).getMessage().getContent();
     }
 
