@@ -29,13 +29,13 @@ public class UpiPromptValidator implements PromptValidator {
             failures.add("TOOL ORDER REGRESSION — one or more tools missing");
         }
 
-        // 4. Hindi few-shot — very robust
+        // 4. Hindi
         if (!actualPrompt.contains("मम्मी") && !actualPrompt.contains("मां") && 
             !actualPrompt.contains("रुपये") && !actualPrompt.contains("rupees")) {
             failures.add("HINDI FEW-SHOT EXAMPLE REMOVED — will break regional users");
         }
 
-        // 5. JSON formatting — most flexible and realistic
+        // 5. JSON formatting
         boolean hasJsonRule = lower.contains("json") && 
                              (lower.contains("only") || 
                               lower.contains("just") || 
@@ -60,6 +60,6 @@ public class UpiPromptValidator implements PromptValidator {
 
     @Override
     public String getTemplateName() {
-        return "UPI High-Value Payment v2.4";
+        return "UPI High-Value Payment";
     }
 }

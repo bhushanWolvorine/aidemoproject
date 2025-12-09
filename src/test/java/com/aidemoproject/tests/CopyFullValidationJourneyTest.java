@@ -45,7 +45,7 @@ public class CopyFullValidationJourneyTest extends BaseTest {
         ExtentReportListener.logInfo("Step 1: Sending high-value UPI request (Hindi) over WebSocket");
         ws.send(sessionId, CommunicationConstants.USER_MESSAGE_HIGH_VALUE, CommunicationConstants.LANGUAGE_HINDI);
         ws.waitFor(CommunicationConstants.EXPECTED_OTP_REQUEST, CommunicationConstants.TIMEOUT_OTP_REQUEST_SECONDS);
-       journeyLog.addAll(ws.getConversationLog());
+       //journeyLog.addAll(ws.getConversationLog());
 
         // === STEP 2: User replies with OTP ===
         ExtentReportListener.logInfo("Step 2: Sending valid OTP (Hindi) over WebSocket");

@@ -60,14 +60,14 @@ public class TestRagFailure extends BaseTest {
         );
 
 
-//        Assert.assertTrue(issues.isEmpty(), "Their are failures detected for RAG");
+       //Assert.assertTrue(issues.isEmpty(), "Their are failures detected for RAG");
 
         Assert.assertFalse(issues.isEmpty(), "Their are failures detected for RAG");
 
 
         ExtentReportListener.logInfo("RAG retrieval issues size=" + issues.size());
 
-        ///  pushing to report portal for stale data and expected data
+
 
         LoggerUtil.info("RAG FAILURE TEST → PASSED (caught stale data)");
     }

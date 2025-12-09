@@ -27,7 +27,7 @@ public class PromptRegressionTest extends BaseTest {
             System.out.println("LOGGED → " + message);
 
         });
-        ExtentReportListener.logInfo("[TEST SETUP] Ready — Fresh connection for this test");
+        ExtentReportListener.logInfo("[TEST SETUP] Ready ");
     }
 
     @Test
