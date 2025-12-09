@@ -118,6 +118,9 @@ public class FullValidationJourneyTest extends BaseTest {
         System.out.println(verdict);
         ExtentReportListener.logInfo("OpenAI final judgment: " + verdict);
 
+
+        
+
 //     assert verdict.contains("\"overall_grade\": \"A\"") :
 //         "Open AI  REJECTED AGENT";
 
