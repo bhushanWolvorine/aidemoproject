@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="6" passed="6" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-12-09T14:15:48 UTC" name="Demo Tests RAG and Orchestration" finished-at="2025-12-09T14:15:53 UTC" duration-ms="4740">
+    <groups>
+    </groups>
+    <test started-at="2025-12-09T14:15:48 UTC" name="All Tests" finished-at="2025-12-09T14:15:53 UTC" duration-ms="4740">
+      <class name="com.aidemoproject.tests.PromptRegressionTest">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.aidemoproject.tests.PromptRegressionTest@43ac0a68]" started-at="2025-12-09T14:15:49 UTC" name="setup" finished-at="2025-12-09T14:15:49 UTC" duration-ms="87" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testPromptRegression_UsingRealWebSocketJourney()[pri:0, instance:com.aidemoproject.tests.PromptRegressionTest@43ac0a68]" started-at="2025-12-09T14:15:49 UTC" name="testPromptRegression_UsingRealWebSocketJourney" finished-at="2025-12-09T14:15:50 UTC" duration-ms="1431" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testPromptRegression_UsingRealWebSocketJourney -->
+        <test-method is-config="true" signature="teardown()[pri:0, instance:com.aidemoproject.tests.PromptRegressionTest@43ac0a68]" started-at="2025-12-09T14:15:50 UTC" name="teardown" finished-at="2025-12-09T14:15:50 UTC" duration-ms="4" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.aidemoproject.tests.PromptRegressionTest -->
+      <class name="com.aidemoproject.tests.FullValidationJourneyTest">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.aidemoproject.tests.FullValidationJourneyTest@4451f60c]" started-at="2025-12-09T14:15:49 UTC" name="setup" finished-at="2025-12-09T14:15:49 UTC" duration-ms="86" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testUpiHighValuePayment_FullValidationJourney()[pri:0, instance:com.aidemoproject.tests.FullValidationJourneyTest@4451f60c]" started-at="2025-12-09T14:15:49 UTC" name="testUpiHighValuePayment_FullValidationJourney" finished-at="2025-12-09T14:15:53 UTC" duration-ms="3986" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpiHighValuePayment_FullValidationJourney -->
+        <test-method is-config="true" signature="teardown()[pri:0, instance:com.aidemoproject.tests.FullValidationJourneyTest@4451f60c]" started-at="2025-12-09T14:15:53 UTC" name="teardown" finished-at="2025-12-09T14:15:53 UTC" duration-ms="4" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.aidemoproject.tests.FullValidationJourneyTest -->
+      <class name="com.aidemoproject.tests.TestFlowOrchestration">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.aidemoproject.tests.TestFlowOrchestration@66522ead]" started-at="2025-12-09T14:15:49 UTC" name="setup" finished-at="2025-12-09T14:15:49 UTC" duration-ms="93" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testFlowforOrchestration()[pri:0, instance:com.aidemoproject.tests.TestFlowOrchestration@66522ead]" started-at="2025-12-09T14:15:49 UTC" name="testFlowforOrchestration" finished-at="2025-12-09T14:15:50 UTC" duration-ms="1488" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testFlowforOrchestration -->
+        <test-method is-config="true" signature="teardown()[pri:0, instance:com.aidemoproject.tests.TestFlowOrchestration@66522ead]" started-at="2025-12-09T14:15:50 UTC" name="teardown" finished-at="2025-12-09T14:15:50 UTC" duration-ms="7" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.aidemoproject.tests.TestFlowOrchestration -->
+      <class name="com.aidemoproject.tests.TestRagFailure">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.aidemoproject.tests.TestRagFailure@1dad01fe]" started-at="2025-12-09T14:15:49 UTC" name="setup" finished-at="2025-12-09T14:15:49 UTC" duration-ms="94" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testRagFailure_Amount2000_StaleBalance()[pri:0, instance:com.aidemoproject.tests.TestRagFailure@1dad01fe]" started-at="2025-12-09T14:15:49 UTC" name="testRagFailure_Amount2000_StaleBalance" finished-at="2025-12-09T14:15:50 UTC" duration-ms="1143" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRagFailure_Amount2000_StaleBalance -->
+        <test-method is-config="true" signature="teardown()[pri:0, instance:com.aidemoproject.tests.TestRagFailure@1dad01fe]" started-at="2025-12-09T14:15:50 UTC" name="teardown" finished-at="2025-12-09T14:15:50 UTC" duration-ms="5" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.aidemoproject.tests.TestRagFailure -->
+      <class name="com.aidemoproject.tests.HallucinationValidatorTest">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.aidemoproject.tests.HallucinationValidatorTest@67cffead]" started-at="2025-12-09T14:15:49 UTC" name="setup" finished-at="2025-12-09T14:15:49 UTC" duration-ms="95" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testUpiHallucination_CatchesOtpLie()[pri:0, instance:com.aidemoproject.tests.HallucinationValidatorTest@67cffead]" started-at="2025-12-09T14:15:49 UTC" name="testUpiHallucination_CatchesOtpLie" finished-at="2025-12-09T14:15:50 UTC" duration-ms="547" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpiHallucination_CatchesOtpLie -->
+        <test-method is-config="true" signature="teardown()[pri:0, instance:com.aidemoproject.tests.HallucinationValidatorTest@67cffead]" started-at="2025-12-09T14:15:50 UTC" name="teardown" finished-at="2025-12-09T14:15:50 UTC" duration-ms="9" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.aidemoproject.tests.HallucinationValidatorTest -->
+      <class name="com.aidemoproject.tests.TestOrchestrationFailure">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.aidemoproject.tests.TestOrchestrationFailure@5a484ce1]" started-at="2025-12-09T14:15:49 UTC" name="setup" finished-at="2025-12-09T14:15:49 UTC" duration-ms="96" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method signature="testOrchestrationFailure_Amount3000_FakeSuccess()[pri:0, instance:com.aidemoproject.tests.TestOrchestrationFailure@5a484ce1]" started-at="2025-12-09T14:15:49 UTC" name="testOrchestrationFailure_Amount3000_FakeSuccess" finished-at="2025-12-09T14:15:50 UTC" duration-ms="1200" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testOrchestrationFailure_Amount3000_FakeSuccess -->
+        <test-method is-config="true" signature="teardown()[pri:0, instance:com.aidemoproject.tests.TestOrchestrationFailure@5a484ce1]" started-at="2025-12-09T14:15:50 UTC" name="teardown" finished-at="2025-12-09T14:15:50 UTC" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- com.aidemoproject.tests.TestOrchestrationFailure -->
+    </test> <!-- All Tests -->
+  </suite> <!-- Demo Tests RAG and Orchestration -->
+</testng-results>

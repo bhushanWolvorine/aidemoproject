@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="TestSuite" time="8.042" tests="6" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/runner/work/aidemoproject/aidemoproject/target/test-classes:/home/runner/work/aidemoproject/aidemoproject/target/classes:/home/runner/.m2/repository/org/testng/testng/7.8.0/testng-7.8.0.jar:/home/runner/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/home/runner/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar:/home/runner/.m2/repository/org/webjars/jquery/3.6.1/jquery-3.6.1.jar:/home/runner/.m2/repository/io/qameta/allure/allure-testng/2.27.0/allure-testng-2.27.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-java-commons/2.27.0/allure-java-commons-2.27.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-model/2.27.0/allure-model-2.27.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-test-filter/2.27.0/allure-test-filter-2.27.0.jar:/home/runner/.m2/repository/com/epam/reportportal/agent-java-testng/5.5.0/agent-java-testng-5.5.0.jar:/home/runner/.m2/repository/com/epam/reportportal/client-java/5.3.13/client-java-5.3.13.jar:/home/runner/.m2/repository/io/reactivex/rxjava2/rxjava/2.2.21/rxjava-2.2.21.jar:/home/runner/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/runner/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/home/runner/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/home/runner/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.10/kotlin-stdlib-common-1.9.10.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.21/kotlin-stdlib-jdk8-1.8.21.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.8.21/kotlin-stdlib-1.8.21.jar:/home/runner/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.21/kotlin-stdlib-jdk7-1.8.21.jar:/home/runner/.m2/repository/com/squareup/retrofit2/converter-scalars/2.11.0/converter-scalars-2.11.0.jar:/home/runner/.m2/repository/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.jar:/home/runner/.m2/repository/org/aspectj/aspectjrt/1.9.19/aspectjrt-1.9.19.jar:/home/runner/.m2/repository/com/epam/reportportal/logger-java-logback/5.1.1/logger-java-logback-5.1.1.jar:/home/runner/.m2/repository/com/epam/reportportal/commons-model/5.0.0/commons-model-5.0.0.jar:/home/runner/.m2/repository/io/swagger/swagger-annotations/1.5.24/swagger-annotations-1.5.24.jar:/home/runner/.m2/repository/javax/validation/validation-api/2.0.1.Final/validation-api-2.0.1.Final.jar:/home/runner/.m2/repository/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar:/home/runner/.m2/repository/ch/qos/logback/logback-classic/1.4.14/logback-classic-1.4.14.jar:/home/runner/.m2/repository/ch/qos/logback/logback-core/1.4.14/logback-core-1.4.14.jar:/home/runner/.m2/repository/com/aventstack/extentreports/5.1.1/extentreports-5.1.1.jar:/home/runner/.m2/repository/io/reactivex/rxjava3/rxjava/3.1.6/rxjava-3.1.6.jar:/home/runner/.m2/repository/org/reactivestreams/reactive-streams/1.0.4/reactive-streams-1.0.4.jar:/home/runner/.m2/repository/org/freemarker/freemarker/2.3.32/freemarker-2.3.32.jar:/home/runner/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/home/runner/.m2/repository/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar:/home/runner/.m2/repository/com/theokanning/openai-gpt3-java/service/0.18.2/service-0.18.2.jar:/home/runner/.m2/repository/com/theokanning/openai-gpt3-java/client/0.18.2/client-0.18.2.jar:/home/runner/.m2/repository/com/theokanning/openai-gpt3-java/api/0.18.2/api-0.18.2.jar:/home/runner/.m2/repository/com/knuddels/jtokkit/0.5.1/jtokkit-0.5.1.jar:/home/runner/.m2/repository/com/squareup/retrofit2/retrofit/2.9.0/retrofit-2.9.0.jar:/home/runner/.m2/repository/com/squareup/retrofit2/adapter-rxjava2/2.9.0/adapter-rxjava2-2.9.0.jar:/home/runner/.m2/repository/com/squareup/retrofit2/converter-jackson/2.9.0/converter-jackson-2.9.0.jar:/home/runner/.m2/repository/com/kjetland/mbknor-jackson-jsonschema_2.12/1.0.34/mbknor-jackson-jsonschema_2.12-1.0.34.jar:/home/runner/.m2/repository/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar:/home/runner/.m2/repository/io/github/classgraph/classgraph/4.8.21/classgraph-4.8.21.jar:/home/runner/.m2/repository/org/java-websocket/Java-WebSocket/1.5.3/Java-WebSocket-1.5.3.jar:/home/runner/.m2/repository/org/mongodb/mongodb-driver-sync/5.1.0/mongodb-driver-sync-5.1.0.jar:/home/runner/.m2/repository/org/mongodb/bson/5.1.0/bson-5.1.0.jar:/home/runner/.m2/repository/org/mongodb/mongodb-driver-core/5.1.0/mongodb-driver-core-5.1.0.jar:/home/runner/.m2/repository/org/mongodb/bson-record-codec/5.1.0/bson-record-codec-5.1.0.jar:/home/runner/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured/5.5.0/rest-assured-5.5.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy/4.0.22/groovy-4.0.22.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-xml/4.0.22/groovy-xml-4.0.22.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/runner/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/runner/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar:/home/runner/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/home/runner/.m2/repository/org/ccil/cowan/tagsoup/tagsoup/1.2.1/tagsoup-1.2.1.jar:/home/runner/.m2/repository/io/rest-assured/json-path/5.5.0/json-path-5.5.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-json/4.0.22/groovy-json-4.0.22.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured-common/5.5.0/rest-assured-common-5.5.0.jar:/home/runner/.m2/repository/io/rest-assured/xml-path/5.5.0/xml-path-5.5.0.jar:/home/runner/.m2/repository/io/appium/java-client/10.0.0/java-client-10.0.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-api/4.39.0/selenium-api-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/4.39.0/selenium-remote-driver-4.39.0.jar:/home/runner/.m2/repository/com/google/auto/service/auto-service-annotations/1.1.1/auto-service-annotations-1.1.1.jar:/home/runner/.m2/repository/com/google/guava/guava/33.5.0-jre/guava-33.5.0-jre.jar:/home/runner/.m2/repository/com/google/guava/failureaccess/1.0.3/failureaccess-1.0.3.jar:/home/runner/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.jar:/home/runner/.m2/repository/com/google/j2objc/j2objc-annotations/3.1/j2objc-annotations-3.1.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-api/1.56.0/opentelemetry-api-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-context/1.56.0/opentelemetry-context-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-common/1.56.0/opentelemetry-common-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-exporter-logging/1.56.0/opentelemetry-exporter-logging-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-common/1.56.0/opentelemetry-sdk-common-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure-spi/1.56.0/opentelemetry-sdk-extension-autoconfigure-spi-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure/1.56.0/opentelemetry-sdk-extension-autoconfigure-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-trace/1.56.0/opentelemetry-sdk-trace-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk/1.56.0/opentelemetry-sdk-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-metrics/1.56.0/opentelemetry-sdk-metrics-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-logs/1.56.0/opentelemetry-sdk-logs-1.56.0.jar:/home/runner/.m2/repository/net/bytebuddy/byte-buddy/1.18.2/byte-buddy-1.18.2.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-http/4.39.0/selenium-http-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-json/4.39.0/selenium-json-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-manager/4.39.0/selenium-manager-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-os/4.39.0/selenium-os-4.39.0.jar:/home/runner/.m2/repository/org/apache/commons/commons-exec/1.6.0/commons-exec-1.6.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-support/4.39.0/selenium-support-4.39.0.jar:/home/runner/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.2/jackson-databind-2.18.2.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.2/jackson-annotations-2.18.2.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.2/jackson-core-2.18.2.jar:"/>
+    <property name="java.vm.vendor" value="Eclipse Adoptium"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://adoptium.net/"/>
+    <property name="user.timezone" value="Etc/UTC"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/temurin-17-jdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/runner/work/aidemoproject/aidemoproject/target/surefire/surefirebooter-20251209141544608_3.jar /home/runner/work/aidemoproject/aidemoproject/target/surefire 2025-12-09T14-15-44_487-jvmRun1 surefire-20251209141544608_1tmp surefire_0-20251209141544608_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/runner/work/aidemoproject/aidemoproject/target/test-classes:/home/runner/work/aidemoproject/aidemoproject/target/classes:/home/runner/.m2/repository/org/testng/testng/7.8.0/testng-7.8.0.jar:/home/runner/.m2/repository/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar:/home/runner/.m2/repository/com/beust/jcommander/1.82/jcommander-1.82.jar:/home/runner/.m2/repository/org/webjars/jquery/3.6.1/jquery-3.6.1.jar:/home/runner/.m2/repository/io/qameta/allure/allure-testng/2.27.0/allure-testng-2.27.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-java-commons/2.27.0/allure-java-commons-2.27.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-model/2.27.0/allure-model-2.27.0.jar:/home/runner/.m2/repository/io/qameta/allure/allure-test-filter/2.27.0/allure-test-filter-2.27.0.jar:/home/runner/.m2/repository/com/epam/reportportal/agent-java-testng/5.5.0/agent-java-testng-5.5.0.jar:/home/runner/.m2/repository/com/epam/reportportal/client-java/5.3.13/client-java-5.3.13.jar:/home/runner/.m2/repository/io/reactivex/rxjava2/rxjava/2.2.21/rxjava-2.2.21.jar:/home/runner/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/runner/.m2/repository/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar:/home/runner/.m2/repository/com/squareup/okio/okio/3.6.0/okio-3.6.0.jar:/home/runner/.m2/repository/com/squareup/okio/okio-jvm/3.6.0/okio-jvm-3.6.0.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.9.10/kotlin-stdlib-common-1.9.10.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.8.21/kotlin-stdlib-jdk8-1.8.21.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.8.21/kotlin-stdlib-1.8.21.jar:/home/runner/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar:/home/runner/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.8.21/kotlin-stdlib-jdk7-1.8.21.jar:/home/runner/.m2/repository/com/squareup/retrofit2/converter-scalars/2.11.0/converter-scalars-2.11.0.jar:/home/runner/.m2/repository/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.jar:/home/runner/.m2/repository/org/aspectj/aspectjrt/1.9.19/aspectjrt-1.9.19.jar:/home/runner/.m2/repository/com/epam/reportportal/logger-java-logback/5.1.1/logger-java-logback-5.1.1.jar:/home/runner/.m2/repository/com/epam/reportportal/commons-model/5.0.0/commons-model-5.0.0.jar:/home/runner/.m2/repository/io/swagger/swagger-annotations/1.5.24/swagger-annotations-1.5.24.jar:/home/runner/.m2/repository/javax/validation/validation-api/2.0.1.Final/validation-api-2.0.1.Final.jar:/home/runner/.m2/repository/org/apache/commons/commons-lang3/3.9/commons-lang3-3.9.jar:/home/runner/.m2/repository/ch/qos/logback/logback-classic/1.4.14/logback-classic-1.4.14.jar:/home/runner/.m2/repository/ch/qos/logback/logback-core/1.4.14/logback-core-1.4.14.jar:/home/runner/.m2/repository/com/aventstack/extentreports/5.1.1/extentreports-5.1.1.jar:/home/runner/.m2/repository/io/reactivex/rxjava3/rxjava/3.1.6/rxjava-3.1.6.jar:/home/runner/.m2/repository/org/reactivestreams/reactive-streams/1.0.4/reactive-streams-1.0.4.jar:/home/runner/.m2/repository/org/freemarker/freemarker/2.3.32/freemarker-2.3.32.jar:/home/runner/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/home/runner/.m2/repository/org/aspectj/aspectjweaver/1.9.22/aspectjweaver-1.9.22.jar:/home/runner/.m2/repository/com/theokanning/openai-gpt3-java/service/0.18.2/service-0.18.2.jar:/home/runner/.m2/repository/com/theokanning/openai-gpt3-java/client/0.18.2/client-0.18.2.jar:/home/runner/.m2/repository/com/theokanning/openai-gpt3-java/api/0.18.2/api-0.18.2.jar:/home/runner/.m2/repository/com/knuddels/jtokkit/0.5.1/jtokkit-0.5.1.jar:/home/runner/.m2/repository/com/squareup/retrofit2/retrofit/2.9.0/retrofit-2.9.0.jar:/home/runner/.m2/repository/com/squareup/retrofit2/adapter-rxjava2/2.9.0/adapter-rxjava2-2.9.0.jar:/home/runner/.m2/repository/com/squareup/retrofit2/converter-jackson/2.9.0/converter-jackson-2.9.0.jar:/home/runner/.m2/repository/com/kjetland/mbknor-jackson-jsonschema_2.12/1.0.34/mbknor-jackson-jsonschema_2.12-1.0.34.jar:/home/runner/.m2/repository/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8.jar:/home/runner/.m2/repository/io/github/classgraph/classgraph/4.8.21/classgraph-4.8.21.jar:/home/runner/.m2/repository/org/java-websocket/Java-WebSocket/1.5.3/Java-WebSocket-1.5.3.jar:/home/runner/.m2/repository/org/mongodb/mongodb-driver-sync/5.1.0/mongodb-driver-sync-5.1.0.jar:/home/runner/.m2/repository/org/mongodb/bson/5.1.0/bson-5.1.0.jar:/home/runner/.m2/repository/org/mongodb/mongodb-driver-core/5.1.0/mongodb-driver-core-5.1.0.jar:/home/runner/.m2/repository/org/mongodb/bson-record-codec/5.1.0/bson-record-codec-5.1.0.jar:/home/runner/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured/5.5.0/rest-assured-5.5.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy/4.0.22/groovy-4.0.22.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-xml/4.0.22/groovy-xml-4.0.22.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/runner/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/runner/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/runner/.m2/repository/org/apache/httpcomponents/httpmime/4.5.13/httpmime-4.5.13.jar:/home/runner/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/home/runner/.m2/repository/org/ccil/cowan/tagsoup/tagsoup/1.2.1/tagsoup-1.2.1.jar:/home/runner/.m2/repository/io/rest-assured/json-path/5.5.0/json-path-5.5.0.jar:/home/runner/.m2/repository/org/apache/groovy/groovy-json/4.0.22/groovy-json-4.0.22.jar:/home/runner/.m2/repository/io/rest-assured/rest-assured-common/5.5.0/rest-assured-common-5.5.0.jar:/home/runner/.m2/repository/io/rest-assured/xml-path/5.5.0/xml-path-5.5.0.jar:/home/runner/.m2/repository/io/appium/java-client/10.0.0/java-client-10.0.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-api/4.39.0/selenium-api-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/4.39.0/selenium-remote-driver-4.39.0.jar:/home/runner/.m2/repository/com/google/auto/service/auto-service-annotations/1.1.1/auto-service-annotations-1.1.1.jar:/home/runner/.m2/repository/com/google/guava/guava/33.5.0-jre/guava-33.5.0-jre.jar:/home/runner/.m2/repository/com/google/guava/failureaccess/1.0.3/failureaccess-1.0.3.jar:/home/runner/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/runner/.m2/repository/com/google/errorprone/error_prone_annotations/2.41.0/error_prone_annotations-2.41.0.jar:/home/runner/.m2/repository/com/google/j2objc/j2objc-annotations/3.1/j2objc-annotations-3.1.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-api/1.56.0/opentelemetry-api-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-context/1.56.0/opentelemetry-context-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-common/1.56.0/opentelemetry-common-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-exporter-logging/1.56.0/opentelemetry-exporter-logging-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-common/1.56.0/opentelemetry-sdk-common-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure-spi/1.56.0/opentelemetry-sdk-extension-autoconfigure-spi-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure/1.56.0/opentelemetry-sdk-extension-autoconfigure-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-trace/1.56.0/opentelemetry-sdk-trace-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk/1.56.0/opentelemetry-sdk-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-metrics/1.56.0/opentelemetry-sdk-metrics-1.56.0.jar:/home/runner/.m2/repository/io/opentelemetry/opentelemetry-sdk-logs/1.56.0/opentelemetry-sdk-logs-1.56.0.jar:/home/runner/.m2/repository/net/bytebuddy/byte-buddy/1.18.2/byte-buddy-1.18.2.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-http/4.39.0/selenium-http-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-json/4.39.0/selenium-json-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-manager/4.39.0/selenium-manager-4.39.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-os/4.39.0/selenium-os-4.39.0.jar:/home/runner/.m2/repository/org/apache/commons/commons-exec/1.6.0/commons-exec-1.6.0.jar:/home/runner/.m2/repository/org/seleniumhq/selenium/selenium-support/4.39.0/selenium-support-4.39.0.jar:/home/runner/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.2/jackson-databind-2.18.2.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.2/jackson-annotations-2.18.2.jar:/home/runner/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.2/jackson-core-2.18.2.jar:"/>
+    <property name="allure.results.directory" value="/home/runner/work/aidemoproject/aidemoproject/target/allure-results"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/runner"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/usr/lib/jvm/temurin-17-jdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/runner/work/aidemoproject/aidemoproject"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/runner/work/aidemoproject/aidemoproject/target/surefire/surefirebooter-20251209141544608_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.17+10"/>
+    <property name="user.name" value="runner"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.11.0-1018-azure"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Temurin-17.0.17+10"/>
+    <property name="localRepository" value="/home/runner/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.17"/>
+    <property name="user.dir" value="/home/runner/work/aidemoproject/aidemoproject"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Eclipse Adoptium"/>
+    <property name="java.vm.version" value="17.0.17+10"/>
+    <property name="java.specification.maintenance.version" value="1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="testUpiHallucination_CatchesOtpLie" classname="com.aidemoproject.tests.HallucinationValidatorTest" time="0.44">
+    <system-out><![CDATA[config.properties loaded successfully
+
+STARTING FULL VALIDATION JOURNEY — UPI High-Value Payment
+LOGGED → {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+CHECKING: {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+LOGGED → {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+CHECKING: {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+LOGGED → {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+LOGGED → {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+CHECKING: {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+CHECKING: {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+LOGGED → {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+CHECKING: {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+LOGGED → {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+CHECKING: {"type":"tool_call","tool":{"name":"extract_payment_intent"}}
+LOGGED → {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"verify_otp","args":{"code":"123456"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"verify_otp","args":{"code":"123456"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"verify_otp","args":{"code":"123456"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"verify_otp","args":{"code":"123456"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"send_otp","args":{"method":"SMS"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"verify_otp","args":{"code":"123456"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"verify_otp","args":{"code":"123456"}}}
+UPI HALLUCINATION → CAUGHT
+]]></system-out>
+    <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+]]></system-err>
+  </testcase>
+  <testcase name="testRagFailure_Amount2000_StaleBalance" classname="com.aidemoproject.tests.TestRagFailure" time="1.033">
+    <system-out><![CDATA[LOGGED → {"type":"text","content":"मैंने अभी send_otp टूल का उपयोग करके आपके फ़ोन पर OTP भेजा है। कृपया कोड बताएं।"}
+CHECKING: {"type":"text","content":"मैंने अभी send_otp टूल का उपयोग करके आपके फ़ोन पर OTP भेजा है। कृपया कोड बताएं।"}
+CHECKING: {"type":"text","content":"मैंने अभी send_otp टूल का उपयोग करके आपके फ़ोन पर OTP भेजा है। कृपया कोड बताएं।"}
+LOGGED → {"type":"text","content":"मैंने अभी send_otp टूल का उपयोग करके आपके फ़ोन पर OTP भेजा है। कृपया कोड बताएं।"}
+CHECKING: {"type":"text","content":"मैंने अभी send_otp टूल का उपयोग करके आपके फ़ोन पर OTP भेजा है। कृपया कोड बताएं।"}
+LOGGED → {"type":"text","content":"मैंने अभी send_otp टूल का उपयोग करके आपके फ़ोन पर OTP भेजा है। कृपया कोड बताएं।"}
+CHECKING: {"type":"tool_call","tool":{"name":"execute_payment","args":{"amount":5000,"payee":"Mom"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"execute_payment","args":{"amount":5000,"payee":"Mom"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"execute_payment","args":{"amount":5000,"payee":"Mom"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"execute_payment","args":{"amount":5000,"payee":"Mom"}}}
+CHECKING: {"type":"tool_call","tool":{"name":"execute_payment","args":{"amount":5000,"payee":"Mom"}}}
+LOGGED → {"type":"tool_call","tool":{"name":"execute_payment","args":{"amount":5000,"payee":"Mom"}}}
+CHECKING: {"type":"text","content":"आपका बैलेंस सिर्फ़ ₹50,000 है। क्या आप फिर भी भेजना चाहते हैं?"}
+LOGGED → {"type":"text","content":"आपका बैलेंस सिर्फ़ ₹50,000 है। क्या आप फिर भी भेजना चाहते हैं?"}
+LOGGED → {"type":"end","content":"पेमेंट सफलतापूर्वक पूरा हो गया! ₹3000 Mom को भेज दिया गया।"}
+CHECKING: {"type":"end","content":"पेमेंट सफलतापूर्वक पूरा हो गया! ₹3000 Mom को भेज दिया गया।"}
+FAKE SUCCESS LIE RECEIVED: {"type":"end","content":"पेमेंट सफलतापूर्वक पूरा हो गया! ₹3000 Mom को भेज दिया गया।"}
+]]></system-out>
+  </testcase>
+  <testcase name="testOrchestrationFailure_Amount3000_FakeSuccess" classname="com.aidemoproject.tests.TestOrchestrationFailure" time="1.087"/>
+  <testcase name="testPromptRegression_UsingRealWebSocketJourney" classname="com.aidemoproject.tests.PromptRegressionTest" time="1.318">
+    <system-out><![CDATA[LOGGED → {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+CHECKING: {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+
+PROMPT REGRESSION TEST
+Actual Prompt Used:
+You are a secure UPI agent. Always use tools in this order:
+extract_payment_intent → send_otp → verify_otp → execute_payment
+temperature=0
+Example: User: "मम्मी को 5000 रुपये भेजो"
+Return ONLY valid JSON
+
+
+Validation Result:
+Passed: true
+PROMPT IS CLEAN — temperature=0, Hindi example present, secure
+]]></system-out>
+  </testcase>
+  <testcase name="testFlowforOrchestration" classname="com.aidemoproject.tests.TestFlowOrchestration" time="1.384">
+    <system-out><![CDATA[CHECKING: {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+LOGGED → {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+LOGGED → {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+CHECKING: {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+AGENT FINAL REPLY: {"type":"end","content":"सुरक्षित रूप से ₹5000 Mom को भेज दिया गया है।"}
+
+====================================================================================================
+           FULL VALIDATION REPORT
+====================================================================================================
+Journey          : UPI Payment
+Passed           : true
+Hallucination    : YES
+Orchestration    : PERFECT
+Retrieval        : ACCURATE
+Compliance       : RBI SAFE
+Critical Issues  : false
+====================================================================================================
+Actual tool sequence: [extract_payment_intent, send_otp, verify_otp, execute_payment]
+]]></system-out>
+  </testcase>
+  <testcase name="testUpiHighValuePayment_FullValidationJourney" classname="com.aidemoproject.tests.FullValidationJourneyTest" time="3.878">
+    <system-out><![CDATA[
+Open AI  FINAL JUDGMENT:
+{
+  "correctness": 10,
+  "hallucination": "No",
+  "empathy_tone": 10,
+  "overall_grade": "A",
+  "explanation": "Perfect secure flow with natural Hindi and empathy"
+}
+
+10/10 A — ALL VALIDATORS PASSED 
+]]></system-out>
+  </testcase>
+</testsuite>
