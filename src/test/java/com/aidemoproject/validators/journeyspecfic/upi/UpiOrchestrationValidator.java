@@ -31,7 +31,7 @@ public class UpiOrchestrationValidator implements OrchestrationValidator {
 
  @Override
  public OrchestrationIssue getIssues(List<String> conversationLog) {
-     //here we are getting only messages which have tool call
+
      List<String> actual = extractToolSequence(conversationLog);
 
      List<String> missing = new ArrayList<>(REQUIRED_SEQUENCE);

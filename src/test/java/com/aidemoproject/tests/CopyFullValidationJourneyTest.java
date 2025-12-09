@@ -73,9 +73,13 @@ public class CopyFullValidationJourneyTest extends BaseTest {
                         .build());
 
 
+
+
+
         System.out.println("\n" + "=".repeat(100));
         System.out.println("           FULL VALIDATION REPORT");
         System.out.println("=".repeat(100));
+
         System.out.println("Journey          : " + report.getJourney());
         System.out.println("Passed           : " + report.isPassed());
         System.out.println("Hallucination    : " + (report.getHallucinationScore() == 1.0 ? "NO" : "YES"));
@@ -87,7 +91,7 @@ public class CopyFullValidationJourneyTest extends BaseTest {
             System.out.println("FAILURES:");
             report.getFailures().forEach(f -> System.out.println("  • " + f));
         }
-        System.out.println("=".repeat(100));
+        System.out.println("====================================================================");
 
         ExtentReportListener.logInfo("Copy journey validation summary - " +
                 "passed=" + report.isPassed() +

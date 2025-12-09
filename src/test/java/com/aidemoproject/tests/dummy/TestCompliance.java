@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.aidemoproject.basevalidators.compliance.ComplianceReport;
 import com.aidemoproject.basevalidators.compliance.ComplianceValidator;
-import com.aidemoproject.basevalidators.compliance.RbiComplianceValidator;
+import com.aidemoproject.validators.journeyspecfic.upi.RbiComplianceValidator;
 import org.testng.annotations.Test;
 
 import com.aidemoproject.base.BaseTest;

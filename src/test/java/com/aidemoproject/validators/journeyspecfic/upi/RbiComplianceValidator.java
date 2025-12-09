@@ -1,4 +1,7 @@
-package com.aidemoproject.basevalidators.compliance;
+package com.aidemoproject.validators.journeyspecfic.upi;
+
+import com.aidemoproject.basevalidators.compliance.ComplianceReport;
+import com.aidemoproject.basevalidators.compliance.ComplianceValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +16,7 @@ public class RbiComplianceValidator implements ComplianceValidator {
  );
 
  private static final String[] PROFANITY = {
-     "fuck", "shit", "bitch", "चूत", "हरामी", "मादरचोद"
+     "revenge", "shit", "shit2", "पागल", "नालायक", "कुत्ता",
  };
 
  @Override

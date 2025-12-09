@@ -1,20 +1,14 @@
 package com.aidemoproject.judge;
 
-import com.aidemoproject.utils.ConfigUtil;
+
 import com.theokanning.openai.completion.chat.*;
 import com.theokanning.openai.service.OpenAiService;
-
 import java.time.Duration;
 import java.util.List;
-
 import com.theokanning.openai.completion.chat.*;
-import com.theokanning.openai.service.OpenAiService;
-
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.util.List;
+
 
 public class OpenAIJudge {
 

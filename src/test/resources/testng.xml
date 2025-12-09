@@ -13,8 +13,8 @@
             <class name="com.aidemoproject.tests.TestOrchestrationFailure"/>
             <class name="com.aidemoproject.tests.PromptRegressionTest"/>
 
-          <class name="com.aidemoproject.tests.TestRagFailure"/>
-         <class name="com.aidemoproject.tests.FullValidationJourneyTest"/>
+            <class name="com.aidemoproject.tests.TestRagFailure"/>
+            <class name="com.aidemoproject.tests.FullValidationJourneyTest"/>
 
             <class name="com.aidemoproject.tests.CopyFullValidationJourneyTest"/>
 

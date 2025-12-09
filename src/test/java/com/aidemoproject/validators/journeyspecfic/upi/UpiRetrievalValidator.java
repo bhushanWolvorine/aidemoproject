@@ -1,17 +1,14 @@
-package com.aidemoproject.basevalidators.retrieval;
+package com.aidemoproject.validators.journeyspecfic.upi;
+
+import com.aidemoproject.basevalidators.retrieval.RetrievalValidator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- * Validates retrieval accuracy for banking/payment journeys Compares agent
- * claims against ground truth (mocked or real DB)
- */
+
 public class UpiRetrievalValidator implements RetrievalValidator {
 
-	// Simulated ground truth — in real life: call core banking system
+
 	private static final String GROUND_TRUTH_BALANCE = "₹2000";
 	private static final String GROUND_TRUTH_LAST_TXN = "₹8,500 to Rent on 04 Apr 2025";
 
@@ -24,7 +21,7 @@ public class UpiRetrievalValidator implements RetrievalValidator {
 	@Override
 	public double getRetrievalScore(String agentReply, List<String> conversationLog, String journeyContext) {
 		List<String> issues = getRetrievalIssues(agentReply, conversationLog, journeyContext);
-		return issues.isEmpty() ? 1.0 : 0.0; //  any mismatch = fail
+		return issues.isEmpty() ? 1.0 : 0.0;
 	}
 
 	@Override

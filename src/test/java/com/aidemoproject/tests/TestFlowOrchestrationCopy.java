@@ -7,7 +7,7 @@ import com.aidemoproject.common.AgentResponse;
 import com.aidemoproject.validators.journeyspecfic.upi.UpiOrchestrationValidator;
 import com.aidemoproject.validators.journeyspecfic.upi.UpiPaymentValidator;
 import com.aidemoproject.common.validationreport.ValidationReport;
-import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
+import com.aidemoproject.validators.journeyspecfic.upi.UpiRetrievalValidator;
 import com.aidemoproject.constants.CommunicationConstants;
 import com.aidemoproject.websocket.client.GenericWebSocketClient;
 import org.testng.Assert;

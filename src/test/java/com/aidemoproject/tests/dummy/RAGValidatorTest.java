@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aidemoproject.basevalidators.retrieval.RetrievalValidator;
-import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
+import com.aidemoproject.validators.journeyspecfic.upi.UpiRetrievalValidator;
 import org.testng.annotations.Test;
 
 import com.aidemoproject.base.BaseTest;

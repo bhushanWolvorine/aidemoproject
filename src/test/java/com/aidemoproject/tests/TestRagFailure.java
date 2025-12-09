@@ -3,7 +3,7 @@ package com.aidemoproject.tests;
 import com.aidemoproject.base.BaseTest;
 import com.aidemoproject.common.listener.ExtentReportListener;
 import com.aidemoproject.common.AgentResponse;
-import com.aidemoproject.basevalidators.retrieval.UpiRetrievalValidator;
+import com.aidemoproject.validators.journeyspecfic.upi.UpiRetrievalValidator;
 import com.aidemoproject.constants.CommunicationConstants;
 import com.aidemoproject.utils.LoggerUtil;
 import com.aidemoproject.websocket.client.GenericWebSocketClient;
